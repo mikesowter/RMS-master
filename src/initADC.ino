@@ -18,12 +18,14 @@ void initADC(void)
 	//   capacitor at AREF pin
 	cbi(ADMUX, REFS1);
 	sbi(ADMUX, REFS0);
+
 	// The ADLAR bit affects the presentation of the ADC conversion result
 	// in the ADC Data Register. Write one to ADLAR to left adjust the
 	// result. Otherwise, the result is right adjusted. Changing the ADLAR
 	// bit will affect the ADC Data Register immediately, regardless of any
 	// ongoing conversions.
 	cbi(ADMUX, ADLAR);
+
 	// The value of these bits selects which analog inputs are connected to
 	// the ADC. If these bits are changed during a conversion, the change
 	// will not go in effect until this conversion is complete (ADIF in
@@ -37,6 +39,7 @@ void initADC(void)
 	// ADC is turned off. Turning the ADC off while a conversion is in
 	// progress, will terminate this conversion.
 	cbi(ADCSRA, ADEN);
+
 	// In Single Conversion mode, write this bit to one to start each
 	// conversion. In Free Running mode, write this bit to one to start the
 	// first conversion. The first conversion after ADSC has been written
@@ -47,14 +50,17 @@ void initADC(void)
 	// When the conversion is complete, it returns to zero. Writing zero to
 	// this bit has no effect.
 	cbi(ADCSRA, ADSC);
+
 	// When this bit is written to one, Auto Triggering of the ADC is
 	// enabled. The ADC will start a conversion on a positive edge of the
 	// selected trigger signal. The trigger source is selected by setting
 	// the ADC Trigger Select bits, ADTS in ADCSRB.
 	sbi(ADCSRA, ADATE);
+
 	// When this bit is written to one and the I-bit in SREG is set, the
 	// ADC Conversion Complete Interrupt is activated.
 	sbi(ADCSRA, ADIE);
+
 	// These bits determine the division factor between the system clock
 	// frequency and the input clock to the ADC.
 	// ADPS2 ADPS1 ADPS0 Division Factor
@@ -78,6 +84,7 @@ void initADC(void)
 	// input to the Analog Comparator. When this bit is written logic zero,
 	// AIN1 is applied to the negative input of the Analog Comparator.
 	cbi(ADCSRB, ACME);
+
 	// If ADATE in ADCSRA is written to one, the value of these bits
 	// selects which source will trigger an ADC conversion. If ADATE is
 	// cleared, the ADTS2:0 settings will have no effect. A conversion will

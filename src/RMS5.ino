@@ -27,6 +27,9 @@ All calcs are performed in 16 bit precision and then configured for display on a
 *************************************************************/
 #include <RMS5.h>
 
+const uint8_t numChannels = 2;    			// the total number of analogs channels (Vs and Is)
+
+
 void setup() {
 
 	pinMode(acInPin, INPUT);
@@ -40,81 +43,83 @@ void setup() {
 	initADC();
 	bufferNum = 0;
 	bufferPtr = 0;
-	sbi(ADCSRA, ADEN);
-	sbi(ADCSRA, ADSC);
+	nums = 193;
 }
 
 void loop()
 {
-	bufferPtr = 0;
+	digitalWrite(ledPin, LOW);
 	waitForXing();
-	while (bufferPtr < BSIZE){};
+	sbi(ADCSRA, ADEN);
+	sbi(ADCSRA, ADIE);
+	sbi(ADCSRA, ADSC);
 
-	if (bufferNum < 3) 		// if not all buffers are full yet
-	{
-  	// Increment mux to next analog
-		bufferNum++;
-    Serial.println();
-	}
-	else     // all buffers full
-	{
+	if (bufferPtr==nums) {
 		// Disable ADC and stop Free Running Conversion Mode
 		cbi(ADCSRA, ADEN);
 		cbi(ADCSRA, ADIE);
-
-		digitalWrite(ledPin, HIGH);
-    // print buffer for analysis
-    for (bufferNum=0;bufferNum < 3;bufferNum++)
-    {
-      for (int j = 0; j<200; j++)
-      {
+		cbi(ADCSRA, ADSC);
+		// Increment mux to next analog
+		bufferNum++;
+		bufferPtr = 0;
+		ADMUX &= 0xF0;
+		ADMUX |= (bufferNum & 0x0F);
+		// throw away last value
+		value = ADCL;
+		value += 256 * ADCH;
+		if (bufferNum == numChannels) {
+			bufferFull = true;
+			digitalWrite(ledPin, HIGH);
+		}
+	}
+	if (bufferFull) {
+	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
+      for (int j = 0; j<nums; j++) {
         Serial.print(buffer[bufferNum][j]);
         Serial.print(',');
       }
     Serial.println();
     }
-//		calcValues();
-//		sendValues();
 		bufferNum = 0;
 		bufferFull = false;
 		bufferPtr = 0;
 		digitalWrite(ledPin, LOW);
-
-		ADMUX &= 0xF0;
-		sbi(ADCSRA, ADEN);
-		sbi(ADCSRA, ADIE);
-		sbi(ADCSRA, ADSC);
+		// and while debugging
+		delay(1000);
+		//		calcValues();
+		//		sendValues();
 	}
+	// reenable ADC Free Running Conversion Mode and reset MUX
+	ADMUX &= 0xF0;
+	sbi(ADCSRA, ADEN);
+	sbi(ADCSRA, ADIE);
+	sbi(ADCSRA, ADSC);
 }
-
 
 //-----------------------------------------------------------------------------
 // ADC Conversion Complete Interrupt
 //-----------------------------------------------------------------------------
-ISR(ADC_vect)
-{
+ISR(ADC_vect) {
 	// When ADCL is read, the ADC Data Register is not updated until ADCH
 	// is read.
 	value = ADCL;
 	value += 256 * ADCH;
-	if (bufferPtr < BSIZE)	{
+	if (bufferPtr < nums)	{
 		buffer[bufferNum][bufferPtr++] = value;
-	}
-	else {
-		bufferFull = true;
 	}
 }
 
 void waitForXing() {
+	digitalWrite(acOutPin,1);
+	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
 	digitalWrite(acOutPin,0);
   while (digitalRead(acInPin)==1) { }  //wait till voltage drops below 0
-	digitalWrite(acOutPin,1);
 	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
 }
 
 void sampleCount()
 {
-	int first = buffer[bufferNum][0];
+	uint8_t first = buffer[bufferNum][0];
 	for (nums = 180; nums < 199; nums++)
 	{
 		if (buffer[bufferNum][nums] > first) return;

@@ -27,7 +27,5 @@ int nums=193;							      // number of samples per power cycle
 volatile uint8_t bufferNum;					// buffer[0] is voltage, buffers[1-7] are current
 volatile uint16_t bufferPtr;				// Offset in current buffer
 volatile uint16_t value;						// most recent ADC value
-volatile int8_t xCount=0;						// number of positive voltage crossings
-volatile bool freeze = false;			  // freeze = true implies all values captured
 volatile bool bufferFull = false;
-volatile uint16_t buffer[8][BSIZE+1];			// Storage for all raw counts from ADC
+volatile uint16_t buffer[8][BSIZE];			// Storage for all raw counts from ADC
