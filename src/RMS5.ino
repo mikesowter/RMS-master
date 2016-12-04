@@ -27,9 +27,6 @@ All calcs are performed in 16 bit precision and then configured for display on a
 *************************************************************/
 #include <RMS5.h>
 
-const uint8_t numChannels = 2;    			// the total number of analogs channels (Vs and Is)
-
-
 void setup() {
 
 	pinMode(acInPin, INPUT);
@@ -38,12 +35,11 @@ void setup() {
 	pinMode(ledPin, OUTPUT);
 
 	Serial.begin(115200);
-	Serial.println("RMS Version 5   2016-11-24");
+	Serial.println("RMS Version 5   2016-12-04");
 
 	initADC();
 	bufferNum = 0;
 	bufferPtr = 0;
-	nums = 193;
 }
 
 void loop()
@@ -89,8 +85,8 @@ void loop()
 		//		calcValues();
 		//		sendValues();
 	}
-	// reenable ADC Free Running Conversion Mode and reset MUX
-	ADMUX &= 0xF0;
+	// reenable ADC Free Running Conversion Mode
+	waitForXing();
 	sbi(ADCSRA, ADEN);
 	sbi(ADCSRA, ADIE);
 	sbi(ADCSRA, ADSC);
@@ -115,13 +111,4 @@ void waitForXing() {
 	digitalWrite(acOutPin,0);
   while (digitalRead(acInPin)==1) { }  //wait till voltage drops below 0
 	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
-}
-
-void sampleCount()
-{
-	uint8_t first = buffer[bufferNum][0];
-	for (nums = 180; nums < 199; nums++)
-	{
-		if (buffer[bufferNum][nums] > first) return;
-	}
 }
