@@ -37,6 +37,8 @@ void setup() {
 	Serial.begin(115200);
 	Serial.println("RMS Version 5   2016-12-04");
 
+	radioSetup();
+
 	initADC();
 	bufferNum = 0;
 	bufferPtr = 0;

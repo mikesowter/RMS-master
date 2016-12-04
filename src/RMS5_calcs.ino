@@ -13,16 +13,15 @@ Resolution:		V - 0.3V
 #include <math.h>
 #include <Print.h>
 
-extern const int numChannels;
+extern const uint8_t numChannels;   // number of analogs (V+I)
+extern const uint8_t nums;			// number of samples per power cycle
 extern volatile uint16_t buffer[numChannels][200];	// filled under interrupt from ADCH register
-extern volatile uint8_t bufferNum;				// selects buffer and analog mux (0-7)
-extern volatile uint8_t bufferPtr;				// Offset in current buffer
+extern volatile uint8_t bufferPtr;				          // Offset in current buffer
+extern uint8_t bufferNum;				          // selects buffer and analog mux (0-7)
 
-extern const uint8_t nums;						// number of samples per power cycle
 float power[7];					        // Sum of sampled V*I
 float Irms[7];					       	// Sum of sampled I*I
 float Vrms;						         	// Sum of sampled V*V
-
 float powerSum;
 float IrmsSum;
 float VrmsSum;
@@ -52,8 +51,8 @@ void calcValues() {
 		for (uint8_t i=0;i<nums;i++)	     // then using that offset, scale the channels
 		{
 			volts = (float)(buffer[0][i]-Voff)/2.0;          // volts to be scaled
-			amps = (float)(buffer[circuit][i]-Ioff)/10.0;  //possibly needs to be scaled separately each channel
-			if (Ioff<500) amps=0.0;	// no circuit connected
+			amps = (float)(buffer[circuit][i]-Ioff)/10.0;    // needs to be scaled separately each channel
+			if (Ioff<500) amps=0.0;	         // no circuit connected
 			powerSum += volts * amps;
 			IrmsSum  += amps * amps;
 			VrmsSum  += volts * volts;

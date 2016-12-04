@@ -4,43 +4,47 @@
 project: RMS
 author: M Sowter
 description: send values to master station via radio
-*************************************************************
+*************************************************************/
 
-#include <TimeLib.h>
+uint16_t buff[32];                                  // 32 byte radio data buffer
+uint16_t packetNum;				                          // packet sequence identifier
 
-int summaryBuff[32];
-byte traceBuff[32];
+extern const uint8_t numChannels;                   // number of analogs (V+I)
+extern const uint8_t nums;			                    // number of samples per power cycle
+extern uint8_t bufferNum;				                    // selects buffer and analog mux (0-7)
+extern volatile uint16_t buffer[numChannels][200];	// filled under interrupt from ADCH register
+extern volatile uint8_t bufferPtr;				          // Offset in current buffer
 
-byte requestTime() {
-  int i=0;
-  Serial.print("requesting time: ");
-  while (i==0) {
-    Wire.beginTransmission(0x66);    // transmit to device #8 (ESP-12)
-    Wire.write("T");
-    Wire.endTransmission();
-/*    Wire.requestFrom(8, 6);       // request 6 bytes from slave device #8
-
-    while (Wire.available()) {    // slave may send less than requested
-      IObuff[i++] = Wire.read();  // receive a byte as character
-    }
-  delay(1);
-  Serial.print('.');
-  }
-    Serial.print(i);
-    Serial.println(" bytes received");
-
-  return i;
-}
+extern float power[7];					      // Sum of sampled V*I
+extern float Irms[7];					       	// Sum of sampled I*I
+extern float Vrms;						        // Sum of sampled V*V
 
 void sendValues() {
-  summaryBuff[0] = packetNum;
-  summaryBuff[1] = Vrms;
-  for (int i = 0; i<7; i++)
-  {
-    summaryBuff[2 * i + 2] = Irms[i];
-    summaryBuff[2 * i + 3] = power[i];
+  buff[0] = packetNum;
+  buff[1] = (uint16_t)(Vrms*100.0);
+  for (int i = 0; i<7; i++) {
+    buff[2 * i + 2] = (uint16_t)(Irms[i]*100.0);
+    buff[2 * i + 3] = (uint16_t)power[i];
   }
-
-    if (packetNum++ > 32000) packetNum = 10000;
+  for (; radio.write(buff, 32) == false;){};  // first 32 byte buffer contains V & circuits 1-7
+  if (numChannels>8) {
+    for (int i = 8; i<numChannels; i++) {
+      buff[2 * i ] = (uint16_t)(Irms[i]*100.0);
+      buff[2 * i + 1] = (uint16_t)power[i];
+    }
+    for (; radio.write(buff, 32) == false;){};  // second 32 byte buffer contains circuits 8-15
+    if (packetNum++ > 50000) packetNum = 10000;
+  }
 }
-*/
+
+void radioSetup()
+{
+	radio.begin();
+	radio.setAutoAck(true);
+	radio.enableAckPayload();
+	radio.setDataRate(RF24_250KBPS);
+	radio.setRetries(15, 15);
+	radio.setChannel(90);
+	radio.openWritingPipe(pipes[1]);
+	radio.printDetails();
+}
