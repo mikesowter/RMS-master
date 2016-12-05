@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 /*************************************************************
 project: RMS
 author: M Sowter

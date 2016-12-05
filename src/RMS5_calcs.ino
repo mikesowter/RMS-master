@@ -10,8 +10,6 @@ Error sources:	V - 0.3%
 Resolution:		V - 0.3V
 							I - 0.025A
 ************************************************************/
-#include <math.h>
-#include <Print.h>
 
 extern const uint8_t numChannels;   // number of analogs (V+I)
 extern const uint8_t nums;			// number of samples per power cycle
@@ -26,7 +24,6 @@ float powerSum;
 float IrmsSum;
 float VrmsSum;
 float volts,amps;
-float Voff,Ioff;
 
 uint8_t circuit;
 
@@ -37,28 +34,20 @@ void calcValues() {
 		IrmsSum=0.0;
 		VrmsSum=0.0;
 
-		Serial.println(circuit);
-
-		for (uint8_t i=0;i<nums;i++)	// first calculate offset in the channels
-		{
-			Voff += (float)buffer[0][i];
-			Ioff += (float)buffer[circuit][i];
-//			printf(",%i",buffer[circuit + 1][i]);
-		}
-		Voff /= (float)nums;
-		Ioff /= (float)nums;
-
 		for (uint8_t i=0;i<nums;i++)	     // then using that offset, scale the channels
 		{
-			volts = (float)(buffer[0][i]-Voff)/2.0;          // volts to be scaled
-			amps = (float)(buffer[circuit][i]-Ioff)/10.0;    // needs to be scaled separately each channel
-			if (Ioff<500) amps=0.0;	         // no circuit connected
+			volts = (float)(buffer[0][i]-512)/1.0;          // volts to be scaled
+			amps = (float)(buffer[circuit][i]-512)/10.0;    // needs to be scaled separately each channel
 			powerSum += volts * amps;
 			IrmsSum  += amps * amps;
 			VrmsSum  += volts * volts;
 		}
 		power[circuit] = powerSum/(float)nums;
+		int PL=100*power[circuit]/100;
+		int PR=(int)(100*power[circuit])%100;
 		Irms[circuit] = 100.0*sqrt(IrmsSum / (float)nums);
+		printf("\r\nCircuit: %i  Power: %i.%i",circuit,PL,PR);
 	}
-	Vrms = 10.0*sqrt(VrmsSum / nums);
+	Vrms = sqrt(VrmsSum / nums);
+	printf("\r\nVolts:  %i.%i",(int)Vrms,(int)(100*Vrms)%100);
 }

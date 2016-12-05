@@ -30,7 +30,7 @@ void initADC(void)
 	// the ADC. If these bits are changed during a conversion, the change
 	// will not go in effect until this conversion is complete (ADIF in
 	// ADCSRA is set).
-	ADMUX |= (bufferNum & 0x07);
+	ADMUX &= 0xF0;
 
 	//---------------------------------------------------------------------
 	// ADCSRA settings

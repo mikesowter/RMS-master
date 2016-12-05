@@ -35,12 +35,13 @@ void setup() {
 	pinMode(ledPin, OUTPUT);
 
 	Serial.begin(115200);
-	Serial.println("RMS Version 5   2016-12-04");
+	printf_begin();
+	printf("\n\rRMS Version 5   2016-12-04\n\n\r");
 
 	radioSetup();
 
 	initADC();
-	bufferNum = 0;
+	bufferNum = -1;
 	bufferPtr = 0;
 }
 
@@ -57,6 +58,8 @@ void loop()
 		cbi(ADCSRA, ADEN);
 		cbi(ADCSRA, ADIE);
 		cbi(ADCSRA, ADSC);
+		// debugging
+		printf("%x ",ADMUX);
 		// Increment mux to next analog
 		bufferNum++;
 		bufferPtr = 0;
@@ -71,21 +74,22 @@ void loop()
 		}
 	}
 	if (bufferFull) {
-	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
+	/*  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
       for (int j = 0; j<nums; j++) {
         Serial.print(buffer[bufferNum][j]);
         Serial.print(',');
       }
     Serial.println();
-    }
+    }									*/
+		ADMUX &= 0xF0;
 		bufferNum = 0;
 		bufferFull = false;
 		bufferPtr = 0;
 		digitalWrite(ledPin, LOW);
 		// and while debugging
 		delay(1000);
-		//		calcValues();
-		//		sendValues();
+		calcValues();
+		//sendValues();
 	}
 	// reenable ADC Free Running Conversion Mode
 	waitForXing();
@@ -110,7 +114,7 @@ ISR(ADC_vect) {
 void waitForXing() {
 	digitalWrite(acOutPin,1);
 	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
-	digitalWrite(acOutPin,0);
   while (digitalRead(acInPin)==1) { }  //wait till voltage drops below 0
+	digitalWrite(acOutPin,0);
 	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
 }
