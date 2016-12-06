@@ -36,6 +36,10 @@ volatile uint8_t bufferPtr;				  // Offset in current buffer
 volatile uint16_t value;						// most recent ADC value
 volatile uint16_t buffer[numChannels][200];			// Storage for all raw counts from ADC
 bool bufferFull = false;
+long before = 0;
+uint16_t buff[16];                                  // 32 byte radio data buffer
+uint16_t packetNum=0x1000;				                  // packet sequence identifier
+
 
 // Set up nRF24L01 radio on SPI bus
 RF24 radio(CEPin, CSNPin);

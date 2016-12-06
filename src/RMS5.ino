@@ -74,23 +74,27 @@ void loop()
 		}
 	}
 	if (bufferFull) {
-	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
+
+/*	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
 			Serial.println(bufferNum);
-      for (int j = 0; j<50; j++) {
+      for (int j = 0; j<40; j++) {
         Serial.print(buffer[bufferNum][j]);
         Serial.print(',');
       }
     Serial.println();
-    }
+	}		*/
 		ADMUX &= 0xF0;
 		bufferNum = 0;
 		bufferFull = false;
 		bufferPtr = 0;
 		digitalWrite(ledPin, LOW);
 		// and while debugging
-		delay(1000);
+		// delay(1000);
 		calcValues();
-		//sendValues();
+		// Serial.print("whole cycle takes: ");
+		// Serial.println(millis()-before);
+		// before=millis();
+		sendValues();
 	}
 	// reenable ADC Free Running Conversion Mode
 	waitForXing();

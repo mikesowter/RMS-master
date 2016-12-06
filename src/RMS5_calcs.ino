@@ -19,7 +19,7 @@ extern uint8_t bufferNum;				          // selects buffer and analog mux (0-7)
 
 float power[numChannels];					        // Sum of sampled V*I
 float Irms[numChannels];					       	// Sum of sampled I*I
-float Vrms,Voff;						         						// Sum of sampled V*V
+float Vrms,Voff;						         			// Sum of sampled V*V
 float powerSum;
 float IrmsSum;
 float VrmsSum;
@@ -31,7 +31,6 @@ void calcValues() {
 		ADCoffset += buffer[1][i];
 	}
 	Voff = (float)(ADCoffset/nums);
-	Serial.println(Voff);
 
 	for (uint8_t circuit=1;circuit<numChannels;circuit++) {
 		powerSum=0.0;
@@ -45,7 +44,8 @@ void calcValues() {
 			IrmsSum  += (amps * amps);
 			VrmsSum  += (volts * volts);
 		}
-		power[circuit] = powerSum/(float)nums;
+		power[circuit] = powerSum / (float)nums;
+		Irms[circuit] = sqrt(IrmsSum / (float)nums);
 	}
 	Vrms = sqrt(VrmsSum / (float)nums);
 	Serial.print("Vrms = ");
@@ -57,5 +57,5 @@ void calcValues() {
 	Serial.print((int)p);
 	Serial.print(".");
 	Serial.println((int)(10.0*p)-10*(int)p);
-	delay(1000);
+	//delay(1000);
 }
