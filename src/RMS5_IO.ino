@@ -13,8 +13,8 @@ extern uint8_t bufferNum;				                    // selects buffer and analog mu
 extern volatile uint16_t buffer[numChannels][200];	// filled under interrupt from ADCH register
 extern volatile uint8_t bufferPtr;				          // Offset in current buffer
 
-extern float power[7];					      // Sum of sampled V*I
-extern float Irms[7];					       	// Sum of sampled I*I
+extern float power[numChannels];					      // Sum of sampled V*I
+extern float Irms[numChannels];					       	// Sum of sampled I*I
 extern float Vrms;						        // Sum of sampled V*V
 
 void sendValues() {

@@ -59,7 +59,7 @@ void loop()
 		cbi(ADCSRA, ADIE);
 		cbi(ADCSRA, ADSC);
 		// debugging
-		printf("%x ",ADMUX);
+		// printf("%x ",ADMUX);
 		// Increment mux to next analog
 		bufferNum++;
 		bufferPtr = 0;
@@ -74,13 +74,14 @@ void loop()
 		}
 	}
 	if (bufferFull) {
-	/*  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
-      for (int j = 0; j<nums; j++) {
+	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
+			Serial.println(bufferNum);
+      for (int j = 0; j<50; j++) {
         Serial.print(buffer[bufferNum][j]);
         Serial.print(',');
       }
     Serial.println();
-    }									*/
+    }
 		ADMUX &= 0xF0;
 		bufferNum = 0;
 		bufferFull = false;
