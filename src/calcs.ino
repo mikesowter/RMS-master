@@ -37,9 +37,9 @@ void calcValues() {
 		IrmsSum=0.0;
 		VrmsSum=0.0;
 
-		for (uint8_t i=0;i<nums;i++) {   // then using that offset, scale the channels
-			volts = 0.884*((float)buffer[0][i]-Voff);        // see calibration spreadsheet
-			amps = 0.0492*((float)buffer[circuit][i]-Voff);    // see calibration spreadsheet
+		for (uint8_t i=0;i<nums;i++) {   			// then using that offset, scale the channels
+			volts = 0.884*((float)buffer[0][i]-Voff);        	// see calibration spreadsheet
+			amps = 0.0492*((float)buffer[circuit][i]-Voff);   // see calibration spreadsheet
 			powerSum += (volts * amps);
 			IrmsSum  += (amps * amps);
 			VrmsSum  += (volts * volts);

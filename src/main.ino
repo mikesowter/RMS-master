@@ -17,15 +17,15 @@ storage to the next buffer, awaiting the beginning of the next cycle.
 Captures are always triggered by the positive transition of the voltage waveform, and so total capture time requires up to
 32 cycles or 640ms at 50Hz. Waveforms are assumed to be stable over the sampling period.
 
-Role of external processor:
-The external processor (ESP family) is responsible for WiFi and web access, together with NTP and FTP processes.
+Role of external slave processor:
+The external processor (ESP family) is responsible for WiFi and web access, for NTP and metrics scrape processes.
 The RAM values are squared and summed to give RMS voltage and current values. Power is calc'd as the sum
 of V*I for each circuit divided by the number of samples collected, then power factor by power/(Vrms*Irms).
 The data is time tagged and then stored for further averaging processes.
 All calcs are performed in 16 bit precision and then configured for display on a WEB page.
 
 *************************************************************/
-#include <RMS5.h>
+#include <main.h>
 
 void setup() {
 
@@ -35,18 +35,18 @@ void setup() {
 	pinMode(ledPin, OUTPUT);
 
 	Serial.begin(115200);
-	printf_begin();
-	printf("\n\rRMS Version 5   2016-12-04\n\n\r");
-
-	radioSetup();
+	Serial.println("\n\rRMS Version 5.1   2018-08-08");
 
 	initADC();
+	setupSPI();
+
 	bufferNum = -1;
 	bufferPtr = 0;
 }
 
 void loop()
 {
+	while(true) testSPI();
 	digitalWrite(ledPin, LOW);
 	waitForXing();
 	sbi(ADCSRA, ADEN);
