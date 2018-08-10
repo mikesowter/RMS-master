@@ -106,18 +106,10 @@ void setupSPI() {
 }
 
 void sendValues() {
-  buff[0] = packetNum;
+  buff[0] = 'V';
   buff[1] = (uint16_t)(Vrms*10.0);
-  for (int i = 0; i<7; i++) {
-    buff[2 * i + 2] = (uint16_t)(Irms[1]*1000.0);
-    buff[2 * i + 3] = (uint16_t)(power[1]*10.0);
+  for (int i = 0; i<numChannels; i++) {
+    buff[2 * i + 2] = (uint16_t)(Irms[i]*1000.0);
+    buff[2 * i + 3] = (uint16_t) power[i];
   }
-//  printf("buff[0-3]: %x %d %d %d\n\r\r",buff[0],buff[1],buff[2],buff[3]);
-  if (numChannels>8) {
-    for (int i = 8; i<numChannels; i++) {
-      buff[2 * i ] = (uint16_t)(Irms[i+1]*1000.0);
-      buff[2 * i + 1] = (uint16_t)(power[i+1]*10.0);
-    }
-  }
-  if (++packetNum > 0x2000) packetNum = 0x1000;
 }

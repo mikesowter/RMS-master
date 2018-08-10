@@ -52,7 +52,7 @@ void loop()
 	sbi(ADCSRA, ADIE);
 	sbi(ADCSRA, ADSC);
 
-	if (bufferPtr==nums) {
+	if (bufferPtr==numSamples) {
 		// Disable ADC and stop Free Running Conversion Mode
 		cbi(ADCSRA, ADEN);
 		cbi(ADCSRA, ADIE);
@@ -110,7 +110,7 @@ ISR(ADC_vect) {
 	// is read.
 	value = ADCL;
 	value += 256 * ADCH;
-	if (bufferPtr < nums)	{
+	if (bufferPtr < numSamples)	{
 		buffer[bufferNum][bufferPtr++] = value;
 	}
 }
