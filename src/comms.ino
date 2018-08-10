@@ -1,22 +1,9 @@
 /*************************************************************
 project: RMS
 author: M Sowter
-description: send values to RMS slave
-*************************************************************/
-
-extern const uint8_t numChannels;                   // number of analogs (V+I)
-extern const uint8_t nums;			                    // number of samples per power cycle
-extern uint8_t bufferNum;				                    // selects buffer and analog mux (0-7)
-extern volatile uint16_t buffer[numChannels][200];	// filled under interrupt from ADCH register
-extern volatile uint8_t bufferPtr;				          // Offset in current buffer
-
-extern float power[numChannels];					      // Sum of sampled V*I
-extern float Irms[numChannels];					       	// Sum of sampled I*I
-extern float Vrms;						                  // Sum of sampled V*V
-
-/*
-    SPI Master Demo Sketch
-    Connect the SPI Master device to the following pins on the esp8266:
+description: send values to RMS slave via SPI
+*************************************************************
+Connect the SPI Master device to the following pins on the esp8266:
 
     GPIO    NodeMCU   Name  |   Uno
    ===================================
@@ -97,15 +84,15 @@ class SPImaster {
     }
 };
 
-SPImaster spim(SS);
+SPImaster SPIm(SS);
 
 void send(const char * message) {
   Serial.print("Master: ");
   Serial.println(message);
-  spim.writeData(message);
+  SPIm.writeData(message);
   delay(10);
   Serial.print("Slave: ");
-  Serial.println(spim.readData());
+  Serial.println(SPIm.readData());
   Serial.println();
 }
 
@@ -113,7 +100,7 @@ void setupSPI() {
   SPISettings set(2000000, LSBFIRST, SPI_MODE0);
   SPI.begin();
   SPI.setClockDivider(SPI_CLOCK_DIV2);
-  spim.begin();
+  SPIm.begin();
   delay(1000);
   send("Hello Slave!");
 }

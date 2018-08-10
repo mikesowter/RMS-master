@@ -46,7 +46,6 @@ void setup() {
 
 void loop()
 {
-	while(true) testSPI();
 	digitalWrite(ledPin, LOW);
 	waitForXing();
 	sbi(ADCSRA, ADEN);

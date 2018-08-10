@@ -1,5 +1,3 @@
-// Defines for setting and clearing register bits
-
 #ifndef sbi
 #define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
 #endif
@@ -15,17 +13,13 @@ void calcValues();
 void sendValues();
 void initADC();
 void setupSPI();
-void testSPI();
-
 
 // set constants:
-const uint8_t nums=193;							// number of samples per 20ms power cycle
+const uint8_t nums = 193;						// number of samples per 20ms power cycle
 const uint8_t numChannels = 3;    	// the total number of analogs channels (V and Is)
 const uint8_t acInPin = 2;    			// the pin connected to a squared 50Hz waveform
 const uint8_t acOutPin = 3;    			// the pin displaying 50Hz activity
 const uint8_t capturePin = 5;				// displaying capture period
-const uint8_t CEPin = 9;            // radio enable
-const uint8_t CSNPin = 10;          // radio enable
 const uint8_t ledPin = 13;      		// the pin of the onboard LED
 
 // set variables:
