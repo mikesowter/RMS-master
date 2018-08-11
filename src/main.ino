@@ -34,7 +34,7 @@ void setup() {
 	pinMode(capturePin, OUTPUT);
 	pinMode(ledPin, OUTPUT);
 
-	Serial.begin(115200);
+	Serial.begin(57600);
 	Serial.println("\n\rRMS Version 5.1   2018-08-08");
 
 	initADC();
@@ -73,15 +73,14 @@ void loop()
 		}
 	}
 	if (bufferFull) {
-
-/*	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
+	  for (bufferNum=0;bufferNum < numChannels;bufferNum++) {
 			Serial.println(bufferNum);
-      for (int j = 0; j<40; j++) {
+      for (int j = 0; j<193; j++) {
         Serial.print(buffer[bufferNum][j]);
         Serial.print(',');
       }
     Serial.println();
-	}		*/
+	}
 		ADMUX &= 0xF0;
 		bufferNum = 0;
 		bufferFull = false;
@@ -116,9 +115,12 @@ ISR(ADC_vect) {
 }
 
 void waitForXing() {
-	digitalWrite(acOutPin,1);
 	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
+	digitalWrite(acOutPin,1);
+//	Serial.print("hi ");
   while (digitalRead(acInPin)==1) { }  //wait till voltage drops below 0
 	digitalWrite(acOutPin,0);
+//	Serial.print("lo ");
 	while (digitalRead(acInPin)==0) { }  //wait for positive voltage Xing
+	digitalWrite(acOutPin,1);
 }

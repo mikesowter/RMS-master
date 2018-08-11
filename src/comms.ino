@@ -106,6 +106,7 @@ void setupSPI() {
 }
 
 void sendValues() {
+  return;
   buff[0] = 'V';
   buff[1] = (uint16_t)(Vrms*10.0);
   for (int i = 0; i<numChannels; i++) {

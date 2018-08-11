@@ -12,12 +12,16 @@ Resolution:		V - 0.3V
 ************************************************************/
 
 void calcValues() {
-	uint64_t ADCoffset = 0;
+
+uint64_t ADCoffset = 0;
 	for (uint8_t i=0;i<numSamples;i++) {	     // then using that offset, scale the channels
 		ADCoffset += buffer[1][i];
 	}
 	Voff = (float)(ADCoffset/numSamples);
-
+	Serial.print("Voff: ");
+	Serial.println((int)Voff*100);
+	delay(1000);
+	return;
 	for (uint8_t circuit=1;circuit<numChannels;circuit++) {
 		powerSum=0.0;
 		IrmsSum=0.0;
