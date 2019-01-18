@@ -8,34 +8,56 @@
 
 #include <SPI.h>
 #include <math.h>
+#include <time.h>
+#include <arduino.h>
 
 void calcValues();
-void sendValues();
+void loadValues();
+void load2Bytes();
 void initADC();
 void setupSPI();
+void getSlaveTime();
+void waitForXing();
+void printBuffers();
+void send(uint8_t *);
+char* i2sd(byte b);
+char* dateStamp();
+char* timeStamp();
 
 // set constants:
-const uint8_t numSamples = 193;						// number of samples per 20ms power cycle
-const uint8_t numChannels = 3;    	// the total number of analogs channels (V and Is)
-const uint8_t acInPin = 2;    			// the pin connected to a squared 50Hz waveform
-const uint8_t acOutPin = 3;    			// the pin displaying 50Hz activity
-const uint8_t capturePin = 5;				// displaying capture period
-const uint8_t ledPin = 13;      		// the pin of the onboard LED
+#define NUM_CHANNELS 7      // the total number of analogs channels (V and Is)
+#define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
+#define SPI_ON_PIN 3    	  // the pin displaying SPI activity
+#define CAPTURE_PIN 4		    // displaying capture period
+#define FAULT_PIN 5			    // displaying any fault
+#define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
+#define AVR_CLK_ERR 0.993   // to be plotted overtime for accuracy
 
 // set variables:
-uint8_t bufferNum;					        // buffer[0] is voltage, buffers[1->] are current
-volatile uint8_t bufferPtr;				  // Offset in current buffer
-volatile uint16_t value;						// most recent ADC value
-volatile uint16_t buffer[numChannels][200];			// Storage for all raw counts from ADC
+uint8_t SPIbuf[6][32];      // sized to allow waveform transmission to slave
+uint8_t bufferNum;					// smooth[0] is voltage, smooth[1->] are current
+uint8_t osCount = 0;        // OS oversample count
+uint8_t numSamples = 192;	  // number of 104us samples per power cycle
+uint8_t o;                  // offset into SPIbuf
+uint32_t t0,t1,t2;          // various ms timers
+uint32_t loopStart,scanStart;           
+volatile uint8_t bufferPtr;         // Offset in ADC buffer
+volatile uint16_t value;		        // most recent ADC value
+volatile uint16_t ADCbuf[200];      // new ADC buffer to allow oversampling
 
 bool bufferFull = false;
-long before = 0;
-uint16_t buff[16];                  // 32 byte data buffer
-uint16_t packetNum=0x1000;				  // packet sequence identifier
-float power[numChannels];					  // Sum of sampled V*I
-float Irms[numChannels];					  // Sum of sampled I*I
-float Vrms,Voff;						        // Sum of sampled V*V
+uint8_t data[33];
+char d2Str[3],fltStr[12];
+char dateStr[] = "yymmdd";
+char timeStr[] = "hh:mm:ss";
+char charBuf[128];
+float Voff,Ioff;				          // average ADC offset
+float smooth[NUM_CHANNELS][200];  // Storage for all smoothed counts
+float Wrms[NUM_CHANNELS];		      // Sum of sampled V*I
+float Irms[NUM_CHANNELS];			    // Sum of sampled I*I
+float Vrms;						            // Sum of sampled V*V
 float powerSum;
 float IrmsSum;
 float VrmsSum;
-float volts,amps;
+float volts,amps,Vmax,Vmin,Imax,Imin;
+float gridFreq;

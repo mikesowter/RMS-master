@@ -1,5 +1,5 @@
 // this process applies only to the ATmel 8 bit AVR processor family
-
+#include "extern.h"
 
 void initADC(void)
 {

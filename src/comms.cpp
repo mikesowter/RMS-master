@@ -5,12 +5,12 @@ description: send values to RMS slave via SPI
 *************************************************************
 Connect the SPI Master device to the following pins on the esp8266:
 
-    GPIO    NodeMCU   Name  |   Uno
-   ===================================
-     15       D8       SS   |   D10
-     13       D7      MOSI  |   D11
-     12       D6      MISO  |   D12
-     14       D5      SCK   |   D13
+    GPIO    NodeMCU   Name  |   Uno     Mega2560
+   =============================================
+     15       D8       SS   |   D10       D19
+     13       D7      MOSI  |   D11       D21
+     12       D6      MISO  |   D12       D22
+     14       D5      SCK   |   D13       D20
 
     Note: If the ESP is booting at a moment when the SPI Master has the Select line HIGH (deselected)
     the ESP8266 WILL FAIL to boot!
@@ -18,49 +18,56 @@ Connect the SPI Master device to the following pins on the esp8266:
 
 */
 #include <SPI.h>
+#include "extern.h"
+#include <time.h>
+uint8_t seq = 0;
 
-class SPImaster {
+class ESPSafeMaster {
   private:
     uint8_t _ss_pin;
-
+    void _pulseSS() {
+      digitalWrite(_ss_pin, HIGH);
+      delayMicroseconds(5);
+      digitalWrite(_ss_pin, LOW);
+    }
   public:
-    SPImaster(uint8_t pin): _ss_pin(pin) {}
+    ESPSafeMaster(uint8_t pin): _ss_pin(pin) {}
     void begin() {
       pinMode(_ss_pin, OUTPUT);
-      digitalWrite(_ss_pin, HIGH);
+      _pulseSS();
     }
 
     uint32_t readStatus() {
-      digitalWrite(_ss_pin, LOW);
+      _pulseSS();
       SPI.transfer(0x04);
       uint32_t status = (SPI.transfer(0) | ((uint32_t)(SPI.transfer(0)) << 8) | ((uint32_t)(SPI.transfer(0)) << 16) | ((uint32_t)(SPI.transfer(0)) << 24));
-      digitalWrite(_ss_pin, HIGH);
+      _pulseSS();
       return status;
     }
 
     void writeStatus(uint32_t status) {
-      digitalWrite(_ss_pin, LOW);
+      _pulseSS();
       SPI.transfer(0x01);
       SPI.transfer(status & 0xFF);
       SPI.transfer((status >> 8) & 0xFF);
       SPI.transfer((status >> 16) & 0xFF);
       SPI.transfer((status >> 24) & 0xFF);
-      digitalWrite(_ss_pin, HIGH);
+      _pulseSS();
     }
 
     void readData(uint8_t * data) {
-      digitalWrite(_ss_pin, LOW);
+      _pulseSS();
       SPI.transfer(0x03);
       SPI.transfer(0x00);
       for (uint8_t i = 0; i < 32; i++) {
         data[i] = SPI.transfer(0);
       }
-      digitalWrite(_ss_pin, HIGH);
+      _pulseSS();
     }
 
     void writeData(uint8_t * data, size_t len) {
       uint8_t i = 0;
-      digitalWrite(_ss_pin, LOW);
+      _pulseSS();
       SPI.transfer(0x02);
       SPI.transfer(0x00);
       while (len-- && i < 32) {
@@ -69,7 +76,7 @@ class SPImaster {
       while (i++ < 32) {
         SPI.transfer(0);
       }
-      digitalWrite(_ss_pin, HIGH);
+      _pulseSS();
     }
 
     String readData() {
@@ -84,33 +91,43 @@ class SPImaster {
     }
 };
 
-SPImaster SPIm(SS);
+ESPSafeMaster SPIm(SS);
 
-void send(const char * message) {
-  Serial.print("Master: ");
-  Serial.println(message);
-  SPIm.writeData(message);
+void send(uint8_t* data) {
+  SPIm.writeData(data,32);
   delay(10);
-  Serial.print("Slave: ");
-  Serial.println(SPIm.readData());
-  Serial.println();
+  SPIm.readData(data);
+  delay(10);
 }
 
 void setupSPI() {
-  SPISettings set(2000000, LSBFIRST, SPI_MODE0);
   SPI.begin();
-  SPI.setClockDivider(SPI_CLOCK_DIV2);
   SPIm.begin();
-  delay(1000);
-  send("Hello Slave!");
 }
 
-void sendValues() {
-  return;
-  buff[0] = 'V';
-  buff[1] = (uint16_t)(Vrms*10.0);
-  for (int i = 0; i<numChannels; i++) {
-    buff[2 * i + 2] = (uint16_t)(Irms[i]*1000.0);
-    buff[2 * i + 3] = (uint16_t) power[i];
+void load2Bytes(float f) {
+  uint16_t ii = (uint16_t) abs(f);
+  SPIbuf[0][o++] = highByte(ii);
+  SPIbuf[0][o++] = lowByte(ii);
+}
+
+void loadValues() {
+  o = 0;
+  load2Bytes(getFreq()*1000.0);
+  load2Bytes(Vrms*100.0);
+  load2Bytes(Vmin*50.0);
+  load2Bytes(Vmax*50.0);
+  for (uint8_t p=0;p<6;p++) {   // bytes 9-32
+    load2Bytes(Irms[p]*1000.0);
+    load2Bytes(Wrms[p]);
   }
 }
+
+void getSlaveTime() {
+  while (year() < 2018 || year() > 2020) setTime(SPIm.readStatus()); 
+  Serial.print((char*) dateStamp());
+  Serial.print(" ");
+  Serial.println((char*) timeStamp());  
+  delay(10);
+}
+
