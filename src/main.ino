@@ -24,15 +24,16 @@ The data is time tagged and then stored for further averaging processes. All cal
 void setup() {
 
 	pinMode(AC_IN_PIN, INPUT);
-	pinMode(SPI_ON_PIN, OUTPUT);
-	pinMode(CAPTURE_PIN, OUTPUT);
-	pinMode(FAULT_PIN, OUTPUT);
+	pinMode(RESET_PIN, OUTPUT);
+	digitalWrite(RESET_PIN, 0);		// reset slave
+	delay(10);
+	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 5.4   2018-10-05");
+	Serial.println("\n\rRMS Version 5.5  2019-01-19");
 
 	initADC();
-//	getFreq();		//local clock running at .993?
+//	getFreq();		//local clock running at .9922?
 	setupSPI();
 	getSlaveTime();
 	SPI.end();

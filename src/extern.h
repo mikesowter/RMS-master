@@ -25,7 +25,7 @@ char* timeStamp();
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define SPI_ON_PIN 3    	  // the pin displaying SPI activity
 #define CAPTURE_PIN 4		    // displaying capture period
-#define FAULT_PIN 5			    // displaying any fault
+#define RESET_PIN 5			    // displaying any fault
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
 #define AVR_CLK_ERR 0.993   // to be plotted overtime for accuracy
 #define vScale 0.873

@@ -19,7 +19,7 @@ Connect the SPI Master device to the following pins on the esp8266:
 */
 #include <SPI.h>
 #include "extern.h"
-#include <time.h>
+#include <Time.h>
 uint8_t seq = 0;
 
 class ESPSafeMaster {

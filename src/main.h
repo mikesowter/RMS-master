@@ -8,7 +8,7 @@
 
 #include <SPI.h>
 #include <math.h>
-#include <time.h>
+#include <Time.h>
 #include <arduino.h>
 
 void calcValues();
@@ -27,9 +27,7 @@ char* timeStamp();
 // set constants:
 #define NUM_CHANNELS 7      // the total number of analogs channels (V and Is)
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
-#define SPI_ON_PIN 3    	  // the pin displaying SPI activity
-#define CAPTURE_PIN 4		    // displaying capture period
-#define FAULT_PIN 5			    // displaying any fault
+#define RESET_PIN 3 		    // restart slave with master
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
 #define AVR_CLK_ERR 0.993   // to be plotted overtime for accuracy
 
