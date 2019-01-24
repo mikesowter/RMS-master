@@ -18,7 +18,10 @@ ISR(ADC_vect) {
 }
 
 void waitForXing() {
-  while (digitalRead(AC_IN_PIN) == 1) {}  //wait for negative going Xing
-	while (digitalRead(AC_IN_PIN) == 0) {}  //wait for positive going Xing
+	t1 = millis();
+  while (digitalRead(AC_IN_PIN) == 1) {		// wait for negative going Xing
+//		if (millis()-t0 > 11) return;					// return if no voltage input
+	}  
+	while (digitalRead(AC_IN_PIN) == 0) {}  // wait for positive going Xing
 }
 

@@ -48,6 +48,7 @@ void setup() {
 void loop() {
 	loopStart = millis();
 	if (bufferPtr == 0) {
+		scanStart = millis();
 		waitForXing();
 		sbi(ADCSRA, ADEN);
 		sbi(ADCSRA, ADIE);
@@ -92,7 +93,6 @@ void loop() {
 				Serial.print("  C&C time: ");
 				Serial.println(t2);
 				if (t2 > 0) delay(3000-t2);
-				scanStart = millis();
 			} //end full buffers
 		} //end oversampling
 	} //end full ADCbuf

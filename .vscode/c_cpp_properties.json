@@ -4,8 +4,6 @@
         {
             "name": "Win32",
             "includePath": [
-                "C:\\Users\\Mikes 6700K\\AppData\\Local\\Arduino15\\packages\\esp8266\\tools\\**",
-                "C:\\Users\\Mikes 6700K\\AppData\\Local\\Arduino15\\packages\\esp8266\\hardware\\esp8266\\2.2.0\\**",
                 "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/cores/arduino",
                 "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/variants/mega",
                 "g:/My Drive/sketchbook/RMS master/lib/Time-master",
@@ -91,8 +89,7 @@
             "intelliSenseMode": "clang-x64",
             "cStandard": "c11",
             "cppStandard": "c++11",
-            "compilerPath": "C:/Users/Mikes 6700K/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe -mmcu=atmega2560",
-            "forcedInclude": []
+            "compilerPath": "C:/Users/Mikes 6700K/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe -mmcu=atmega2560"
         }
     ],
     "version": 4
