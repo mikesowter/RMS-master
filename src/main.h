@@ -25,20 +25,20 @@ char* dateStamp();
 char* timeStamp();
 
 // set constants:
-#define NUM_CHANNELS 7      // the total number of analogs channels (V and Is)
+#define NUM_CHANNELS 8      // the total number of analogs channels (V and Is)
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define RESET_PIN 3 		    // restart slave with master
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
-#define AVR_CLK_ERR 0.993   // to be plotted overtime for accuracy
+#define AVR_CLK_ERR 0.993   // to be plotted over time for accuracy
 
 // set variables:
 uint8_t SPIbuf[6][32];      // sized to allow waveform transmission to slave
 uint8_t bufferNum;					// smooth[0] is voltage, smooth[1->] are current
 uint8_t osCount = 0;        // OS oversample count
 uint8_t numSamples = 192;	  // number of 104us samples per power cycle
-uint8_t o;                  // offset into SPIbuf
-uint32_t t0,t1,t2;          // various ms timers
-uint32_t loopStart,scanStart;           
+uint8_t SPIoff;             // offset into SPIbuf
+uint32_t t0,t1,t2,t3,t4;            // various ms timers
+uint32_t loopStart,scanStart,calcStart;           
 volatile uint8_t bufferPtr;         // Offset in ADC buffer
 volatile uint16_t value;		        // most recent ADC value
 volatile uint16_t ADCbuf[200];      // new ADC buffer to allow oversampling

@@ -30,7 +30,7 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 5.5  2019-01-19");
+	Serial.println("\n\rRMS Version 5.5  2019-06-28");
 
 	initADC();
 //	getFreq();		//local clock running at .9922?
@@ -43,10 +43,10 @@ void setup() {
 	osCount = 0;
 	bufferNum = 0;
 	bufferPtr = 0;
+	loopStart = millis();
 }
 
 void loop() {
-	loopStart = millis();
 	if (bufferPtr == 0) {
 		scanStart = millis();
 		waitForXing();
@@ -76,23 +76,33 @@ void loop() {
 			// check for full buffers
 			if (bufferNum >= NUM_CHANNELS) {
 				t1 = millis() - scanStart;
-				//printBuffers();
-				//delay(100);
+			//	printBuffers();
+			//	delay(100);
+				calcStart = millis();
 				calcValues();				// 90ms
+				t2 = millis() - calcStart;
 				setupSPI();					// 22ms total comms time
 				// load data to send to slave
 				loadValues();
 				send(SPIbuf[0]);
 				SPI.end();
-				t2 = millis() - scanStart;
+				t3 = millis() - calcStart - t2;
 				// setup for new scan every 2 seconds
 				ADMUX &= 0xF0;
 				bufferNum = 0;
-				Serial.print("scan time: ");
+				
+				Serial.print("  scan time: ");
 				Serial.print(t1);
-				Serial.print("  C&C time: ");
-				Serial.println(t2);
-				if (t2 > 0) delay(3000-t2);
+				Serial.print("  calc time: ");
+				Serial.print(t2);
+				Serial.print("  comms time: ");
+				Serial.println(t3);
+				t4 = millis()-loopStart;
+				Serial.print("loop time: ");
+				Serial.print(t4);
+				if (t4 < 2000) delay(2000 - t4);
+				loopStart = millis();
+				// 
 			} //end full buffers
 		} //end oversampling
 	} //end full ADCbuf

@@ -30,8 +30,8 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-	Vmax = vpScale*(smooth[NUM_CHANNELS-2][2]-Voff+30);
-	Vmin = vpScale*(smooth[NUM_CHANNELS-1][2]-Voff);
+	Vmax = vpScale*(max(smooth[2][2],smooth[0][136])-Voff);
+	Vmin = vpScale*(min(smooth[1][2],smooth[0][40])-Voff);
 
 	Serial.println();
 	Serial.print("Vrms = ");
@@ -43,19 +43,19 @@ void calcValues() {
 	Serial.print(", Freq = ");
 	Serial.println(getFreq());
 
-	// then the currents on a1,a2...
+	// then the currents on a3,a4...
 
-	for (uint8_t circuit=1;circuit<5;circuit++) {
+	for (uint8_t circuit=3 ; circuit<NUM_CHANNELS ; circuit++) {
 		powerSum = 0.0;
 		IrmsSum = 0.0;
 		Imax = -1.0;
 		Imin = +1.0;
 		ADCoffset = 0.0;
-		for (uint8_t i=0;i<numSamples;i++) {
+		for (uint8_t i=0 ; i<numSamples ; i++) {
 			ADCoffset += smooth[circuit][i];
 		}
 		Ioff = (ADCoffset/(float)numSamples);
-		for (uint8_t i=0;i<numSamples;i++) {   			// subtract that offset & scale the channels
+		for (uint8_t i=0 ; i<numSamples ; i++) {   			// subtract that offset & scale the channels
 			volts = vScale*(smooth[0][i]-Voff);
 			amps = iScale*(smooth[circuit][i]-Ioff);
 			if (amps > Imax) Imax = amps;
@@ -91,7 +91,7 @@ char* f2s4(float f) {
 }
 
 void printBuffers() {
-  for (int i=0;i<1;i++) {
+  for (int i=0;i<3;i++) {
 		Serial.println(i);
 		for (int j = 0; j<192; j++) {
 			Serial.print(smooth[i][j]);

@@ -107,12 +107,12 @@ void setupSPI() {
 
 void load2Bytes(float f) {
   uint16_t ii = (uint16_t) abs(f);
-  SPIbuf[0][o++] = highByte(ii);
-  SPIbuf[0][o++] = lowByte(ii);
+  SPIbuf[0][SPIoff++] = highByte(ii);
+  SPIbuf[0][SPIoff++] = lowByte(ii);
 }
 
 void loadValues() {
-  o = 0;
+  SPIoff = 0;
   load2Bytes(getFreq()*1000.0);
   load2Bytes(Vrms*100.0);
   load2Bytes(Vmin*50.0);
