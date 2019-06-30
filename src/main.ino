@@ -96,10 +96,10 @@ void loop() {
 				Serial.print("  calc time: ");
 				Serial.print(t2);
 				Serial.print("  comms time: ");
-				Serial.println(t3);
+				Serial.print(t3);
 				t4 = millis()-loopStart;
-				Serial.print("loop time: ");
-				Serial.print(t4);
+				Serial.print("  loop time: ");
+				Serial.println(t4);
 				if (t4 < 2000) delay(2000 - t4);
 				loopStart = millis();
 				// 

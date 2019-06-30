@@ -51,8 +51,8 @@ char timeStr[] = "hh:mm:ss";
 char charBuf[128];
 float Voff,Ioff;				          // average ADC offset
 float smooth[NUM_CHANNELS][200];  // Storage for all smoothed counts
-float Wrms[NUM_CHANNELS];		      // Sum of sampled V*I
-float Irms[NUM_CHANNELS];			    // Sum of sampled I*I
+float Wrms[12];		                // Sum of sampled V*I
+float Irms[12];			              // Sum of sampled I*I
 float Vrms;						            // Sum of sampled V*V
 float powerSum;
 float IrmsSum;

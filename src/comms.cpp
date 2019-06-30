@@ -117,8 +117,8 @@ void loadValues() {
   load2Bytes(Vrms*100.0);
   load2Bytes(Vmin*50.0);
   load2Bytes(Vmax*50.0);
-  for (uint8_t p=0;p<6;p++) {   // bytes 9-32
-    load2Bytes(Irms[p]*1000.0);
+  for (uint8_t p=0 ; p<12 ; p++) {   // bytes 9-32
+  //  load2Bytes(Irms[p]*1000.0);
     load2Bytes(Wrms[p]);
   }
 }
