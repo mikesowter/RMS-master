@@ -64,9 +64,17 @@ void loop() {
 		value += 256 * ADCH;
 		// if we have enough sample runs just average them
 		if (osCount >= OVER_SAMPLE) {
-			for (int i = 0;i<numSamples;i++) {
-				smooth[bufferNum][i] = (float)ADCbuf[i]/(float)OVER_SAMPLE;
-				ADCbuf[i] = 0;
+			if (bufferNum < 3) {
+				for (int i = 0 ; i<numSamples ; i++) {
+					Vsmooth[bufferNum][i] = (float)ADCbuf[i]/(float)OVER_SAMPLE;
+					ADCbuf[i] = 0;
+				}
+			}
+			else {
+				for (int i = 0 ; i<numSamples ; i++) {
+					Ismooth[bufferNum][i] = (ADCbuf[i] + OVER_SAMPLE/2)/OVER_SAMPLE;
+					ADCbuf[i] = 0;
+				}
 			}
 			osCount = 0;
 			// Increment mux to next analog

@@ -25,7 +25,7 @@ char* dateStamp();
 char* timeStamp();
 
 // set constants:
-#define NUM_CHANNELS 8      // the total number of analogs channels (V and Is)
+#define NUM_CHANNELS 8      // the total number of analogs channels (V and I)
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define RESET_PIN 3 		    // restart slave with master
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
@@ -50,7 +50,8 @@ char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
 char charBuf[128];
 float Voff,Ioff;				          // average ADC offset
-float smooth[NUM_CHANNELS][200];  // Storage for all smoothed counts
+float Vsmooth[3][200];            // Storage for smoothed voltage counts
+uint16_t Ismooth[10][200];        // Storage for smoothed CURRENT counts
 float Wrms[12];		                // Sum of sampled V*I
 float Irms[12];			              // Sum of sampled I*I
 float Vrms;						            // Sum of sampled V*V

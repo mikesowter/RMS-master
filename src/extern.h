@@ -33,7 +33,7 @@ char* timeStamp();
 #define iScale 0.135
 
 // set globals:
-extern uint8_t bufferNum;			      // smooth[0] is voltage, smooth[1->] are current
+extern uint8_t bufferNum;			      // 0-2 are voltage, 3-> are current
 extern uint8_t OSindex;             // OS oversample count
 extern uint8_t numSamples;			    // number of 104us samples per power cycle
 extern uint8_t SPIbuf[][32];        // sized to allow waveform transmission to slave
@@ -49,7 +49,8 @@ extern char fltStr[];
 extern char dateStr[];
 extern char timeStr[];
 extern char charBuf[];
-extern float smooth[NUM_CHANNELS][200];   // Storage for all smoothed counts
+extern float Vsmooth[3][200];             // Storage for over-sampled voltage counts
+extern uint16_t Ismooth[10][200];         // Storage for over-sampled CURRENT counts
 extern float Voff,Ioff;				            // average ADC offset
 extern float Wrms[];					            // Sum of sampled V*I
 extern float Irms[];					            // Sum of sampled I*I
