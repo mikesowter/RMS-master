@@ -25,7 +25,7 @@ char* dateStamp();
 char* timeStamp();
 
 // set constants:
-#define NUM_CHANNELS 8      // the total number of analogs channels (V and I)
+#define NUM_CHANNELS 5      // the number of monitored circuits
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define RESET_PIN 3 		    // restart slave with master
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise

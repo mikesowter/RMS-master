@@ -72,7 +72,7 @@ void loop() {
 			}
 			else {
 				for (int i = 0 ; i<numSamples ; i++) {
-					Ismooth[bufferNum][i] = (ADCbuf[i] + OVER_SAMPLE/2)/OVER_SAMPLE;
+					Ismooth[bufferNum-3][i] = (ADCbuf[i] + OVER_SAMPLE/2)/OVER_SAMPLE;
 					ADCbuf[i] = 0;
 				}
 			}
@@ -82,14 +82,14 @@ void loop() {
 			ADMUX &= 0xF0;
 			ADMUX |= (bufferNum & 0x0F);
 			// check for full buffers
-			if (bufferNum >= NUM_CHANNELS) {
+			if (bufferNum >= NUM_CHANNELS+3) {
 				t1 = millis() - scanStart;
 			//	printBuffers();
 			//	delay(100);
 				calcStart = millis();
-				calcValues();				// 90ms
+				calcValues();			
 				t2 = millis() - calcStart;
-				setupSPI();					// 22ms total comms time
+				setupSPI();				
 				// load data to send to slave
 				loadValues();
 				send(SPIbuf[0]);
@@ -110,7 +110,6 @@ void loop() {
 				Serial.println(t4);
 				if (t4 < 2000) delay(2000 - t4);
 				loopStart = millis();
-				// 
 			} //end full buffers
 		} //end oversampling
 	} //end full ADCbuf

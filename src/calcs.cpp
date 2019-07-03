@@ -18,7 +18,7 @@ char* f2s4(float f);
 void calcValues() {
 	float ADCoffset = 0.0;
 
-	// first the voltage on A0
+	// first the voltage on A0-A2
 
 	VrmsSum = 0.0;
 	for (uint8_t i=0;i<numSamples;i++) {	     // calculate average voltage offset
@@ -30,9 +30,9 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-	Vmax = vpScale*(max(Vsmooth[2][2],Vsmooth[0][136])-Voff);
-	Vmin = vpScale*(min(Vsmooth[1][2],Vsmooth[0][40])-Voff);
-
+	Vmin = vScale*(min(Vsmooth[1][2],Vsmooth[0][40])-Voff);
+  Vmax = vScale*(max(Vsmooth[2][2],Vsmooth[0][136])-Voff);
+	
 	Serial.println();
 	Serial.print("Vrms = ");
 	Serial.print(Vrms);
@@ -43,23 +43,28 @@ void calcValues() {
 	Serial.print(", Freq = ");
 	Serial.println(getFreq());
 
-	// then the currents on a3,a4...
+	// then the currents on A3,A4...
 
-	for (uint8_t circuit=3 ; circuit<NUM_CHANNELS ; circuit++) {
+	ADCoffset = 0.0;
+	for (uint8_t i=0 ; i<numSamples ; i++) ADCoffset += (float)Ismooth[0][i];
+	Ioff = ADCoffset/(float)numSamples;
+
+	for (uint8_t circuit=1 ; circuit<=NUM_CHANNELS ; circuit++) {
 		powerSum = 0.0;
 		IrmsSum = 0.0;
-		Imax = -1.0;
-		Imin = +1.0;
-		ADCoffset = 0.0;
-			for (uint8_t i=0 ; i<numSamples ; i++) {   			// subtract that offset & scale the channels
+		Imax = -10.0;
+		Imin = +10.0;
+	
+		for (uint8_t i=0 ; i<numSamples ; i++) {   			// subtract that offset & scale the channels
 			volts = vScale*(Vsmooth[0][i]-Voff);
-			amps = iScale*(float)(Ismooth[circuit][i]-Voff);
+			amps = iScale*((float)Ismooth[circuit-1][i]-Ioff);
 			if (amps > Imax) Imax = amps;
 			if (amps < Imin) Imin = amps;
 			powerSum += (volts * amps);
 			IrmsSum  += (amps * amps);
 		}
-		Wrms[circuit] = abs(powerSum / (float)numSamples);
+
+		Wrms[circuit] = 0.9*Wrms[circuit] + 0.1*abs(powerSum / (float)numSamples);
 		Irms[circuit] = (float) sqrt(IrmsSum / (float)numSamples);
 		Serial.print("Circuit[");
 		Serial.print(circuit);
