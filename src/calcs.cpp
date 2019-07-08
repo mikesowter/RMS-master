@@ -110,5 +110,5 @@ float getFreq() {
 		waitForXing();
 	}
 	//numSamples = (192.0/AVR_CLK_ERR)*(float)t1/200.0;  // AVR_CLK_ERR is local ms clock error
-	return 10000000.0/(float)(micros()-t);
+	return 9992400.0/(float)(micros()-t);
 }
