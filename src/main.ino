@@ -64,13 +64,13 @@ void loop() {
 		value += 256 * ADCH;
 		// if we have enough sample runs just average them
 		if (osCount >= OVER_SAMPLE) {
-			if (bufferNum < 3) {
+			if (bufferNum < 3) {			// bufferNum 0-2 are voltage
 				for (int i = 0 ; i<numSamples ; i++) {
 					Vsmooth[bufferNum][i] = (float)ADCbuf[i]/(float)OVER_SAMPLE;
 					ADCbuf[i] = 0;
 				}
 			}
-			else {
+			else {										// bufferNum 3-10 are current
 				for (int i = 0 ; i<numSamples ; i++) {
 					Ismooth[bufferNum-3][i] = (ADCbuf[i] + OVER_SAMPLE/2)/OVER_SAMPLE;
 					ADCbuf[i] = 0;
@@ -80,12 +80,14 @@ void loop() {
 			// Increment mux to next analog
 			bufferNum++;
 			ADMUX &= 0xF0;
-			ADMUX |= (bufferNum & 0x0F);
+			ADMUX |= (bufferNum & 0x07);
+			if ( bufferNum < 8 ) cbi(ADCSRB,3);  //mux5 (ADCSRB b3) is used as MUX bit 3 
+			else sbi(ADCSRB,3);
 			// check for full buffers
 			if (bufferNum >= NUM_CHANNELS+3) {
 				t1 = millis() - scanStart;
-			//	printBuffers();
-			//	delay(100);
+//				printBuffers();
+//				delay(100);
 				calcStart = millis();
 				calcValues();			
 				t2 = millis() - calcStart;
@@ -95,8 +97,9 @@ void loop() {
 				send(SPIbuf[0]);
 				SPI.end();
 				t3 = millis() - calcStart - t2;
-				// setup for new scan every 2 seconds
+				// setup for new scan every 2.5 seconds
 				ADMUX &= 0xF0;
+				cbi(ADCSRB,3); 
 				bufferNum = 0;
 				
 				Serial.print("  scan time: ");
@@ -108,7 +111,7 @@ void loop() {
 				t4 = millis()-loopStart;
 				Serial.print("  loop time: ");
 				Serial.println(t4);
-				if (t4 < 2000) delay(2000 - t4);
+				if (t4 < 2500) delay(2500 - t4);
 				loopStart = millis();
 			} //end full buffers
 		} //end oversampling

@@ -7,8 +7,8 @@
             "name": "Win32",
             "includePath": [
                 "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/src",
-                "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/lib/Time-master",
                 "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src",
+                "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/lib/Time-master",
                 "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/cores/arduino",
                 "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/variants/mega",
                 "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src",
@@ -23,8 +23,8 @@
                 "databaseFilename": "${workspaceRoot}/.vscode/.browse.c_cpp.db",
                 "path": [
                     "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/src",
-                    "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/lib/Time-master",
                     "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src",
+                    "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/lib/Time-master",
                     "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/cores/arduino",
                     "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/variants/mega",
                     "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src",

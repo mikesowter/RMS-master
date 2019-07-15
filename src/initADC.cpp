@@ -31,8 +31,9 @@ void initADC(void)
 	// the ADC. If these bits are changed during a conversion, the change
 	// will not go in effect until this conversion is complete (ADIF in
 	// ADCSRA is set).
+	// The ADC channel number is selected: 8*mux5 + 4*mux2 + 2*mux1 + mux0
 	ADMUX &= 0xF0;
-
+	
 	//---------------------------------------------------------------------
 	// ADCSRA settings
 	//---------------------------------------------------------------------
@@ -109,20 +110,22 @@ void initADC(void)
 	cbi(ADCSRB, ADTS0);
 
 	//---------------------------------------------------------------------
-	// DIDR0 settings
+	// DIDR0 (& DIDR2 on 2560) settings
 	//---------------------------------------------------------------------
-	// When this bit is written logic one, the digital input buffer on the
+	// When these bits are written logic one, the digital input buffer on the
 	// corresponding ADC pin is disabled. The corresponding PIN Register
 	// bit will always read as zero when this bit is set. When an analog
 	// signal is applied to the ADC5..0 pin and the digital input from this
 	// pin is not needed, this bit should be written logic one to reduce
 	// power consumption in the digital input buffer.
-	// Note that ADC pins ADC7 and ADC6 do not have digital input buffers,
-	// and therefore do not require Digital Input Disable bits.
-	sbi(DIDR0, ADC5D);
-	sbi(DIDR0, ADC4D);
-	sbi(DIDR0, ADC3D);
-	sbi(DIDR0, ADC2D);
-	sbi(DIDR0, ADC1D);
-	sbi(DIDR0, ADC0D);
+	// sbi(DIDR0, ADC7D);
+	// sbi(DIDR0, ADC6D);
+	// sbi(DIDR0, ADC5D);
+	// sbi(DIDR0, ADC4D);
+	// sbi(DIDR0, ADC3D);
+	// sbi(DIDR0, ADC2D);
+	// sbi(DIDR0, ADC1D);
+	// sbi(DIDR0, ADC0D);
+	DIDR0 = 0xFF;
+	DIDR2 = 0xFF;
 }

@@ -64,7 +64,8 @@ void calcValues() {
 			IrmsSum  += (amps * amps);
 		}
 
-		Wrms[circuit] = 0.9*Wrms[circuit] + 0.1*abs(powerSum / (float)numSamples);
+		// Wrms[circuit] = 0.9*Wrms[circuit] + 0.1*abs(powerSum / (float)numSamples);
+		Wrms[circuit] = abs(powerSum / (float)numSamples);
 		Irms[circuit] = (float) sqrt(IrmsSum / (float)numSamples);
 		Serial.print("Circuit[");
 		Serial.print(circuit);
@@ -106,9 +107,13 @@ void printBuffers() {
 float getFreq() {
 	waitForXing();
 	uint32_t t = micros();
-	for (int i=0;i<10;i++) {
-		waitForXing();
+	for (int i=0;i<10;i++) {	// measure period of 10 cycles in microseconds
+		waitForXing();					// frequency = 50.0*(10*20,000/period)
 	}
-	//numSamples = (192.0/AVR_CLK_ERR)*(float)t1/200.0;  // AVR_CLK_ERR is local ms clock error
-	return 9992400.0/(float)(micros()-t);
+	return AVR_CLK_ERR*10000000.0/(float)(micros()-t);
+
+	// could optionally calculate the number of samples per cycle as:
+	// numSamples = (int)(192.3/AVR_CLK_ERR)*(float)t/200.0;  
+	// where 192.3 = 20ms/104us
+	// but this has limited impact with freq between 49.8 and 50.2 Hz
 }

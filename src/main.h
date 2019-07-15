@@ -25,11 +25,11 @@ char* dateStamp();
 char* timeStamp();
 
 // set constants:
-#define NUM_CHANNELS 5      // the number of monitored circuits
+#define NUM_CHANNELS 8      // the number of monitored circuits
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define RESET_PIN 3 		    // restart slave with master
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
-#define AVR_CLK_ERR 0.993   // to be plotted over time for accuracy
+#define AVR_CLK_ERR 0.99924 // to be plotted over time for accuracy
 
 // set variables:
 uint8_t SPIbuf[6][32];      // sized to allow waveform transmission to slave
@@ -52,8 +52,8 @@ char charBuf[128];
 float Voff,Ioff;				          // average ADC offset
 float Vsmooth[3][200];            // Storage for smoothed voltage counts
 uint16_t Ismooth[10][200];        // Storage for smoothed CURRENT counts
-float Wrms[12];		                // Sum of sampled V*I
-float Irms[12];			              // Sum of sampled I*I
+float Wrms[10];		                // Sum of sampled V*I
+float Irms[10];			              // Sum of sampled I*I
 float Vrms;						            // Sum of sampled V*V
 float powerSum;
 float IrmsSum;

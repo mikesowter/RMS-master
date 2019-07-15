@@ -117,14 +117,18 @@ void loadValues() {
   load2Bytes(Vrms*100.0);
   load2Bytes(Vmin*50.0);
   load2Bytes(Vmax*50.0);
-  for (uint8_t p=1 ; p<12 ; p++) {   // bytes 9-32
-  //  load2Bytes(Irms[p]*1000.0);
+  for (uint8_t p=1 ; p<=NUM_CHANNELS ; p++) {   // bytes 8-27
     load2Bytes(Wrms[p]);
   }
 }
 
 void getSlaveTime() {
-  while (year() < 2018 || year() > 2020) setTime(SPIm.readStatus()); 
+  while (year() < 2019 || year() > 2030) {
+    setTime(SPIm.readStatus()); 
+    Serial.print(year());
+    Serial.print(" ");
+    delay(200);
+  }
   Serial.print((char*) dateStamp());
   Serial.print(" ");
   Serial.println((char*) timeStamp());  
