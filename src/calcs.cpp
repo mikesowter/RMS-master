@@ -67,6 +67,10 @@ void calcValues() {
 		// Wrms[circuit] = 0.9*Wrms[circuit] + 0.1*abs(powerSum / (float)numSamples);
 		Wrms[circuit] = abs(powerSum / (float)numSamples);
 		Irms[circuit] = (float) sqrt(IrmsSum / (float)numSamples);
+		if (circuit == 1) {
+			Irms[circuit] *= 2.0;  // first circuit is scaled for larger load
+			Wrms[circuit] *= 2.0;
+		}
 		Serial.print("Circuit[");
 		Serial.print(circuit);
 		Serial.print("]: Imin = ");

@@ -19,6 +19,10 @@ void printBuffers();
 void send(uint8_t* data);
 char* dateStamp();
 char* timeStamp();
+void flashLEDs();
+void setBlue();
+void setGreen();
+void setRed();
 
 // set constants:
 #define NUM_CHANNELS 8      // the total number of analogs channels (V and Is)
@@ -26,8 +30,11 @@ char* timeStamp();
 #define SPI_ON_PIN 3    	  // the pin displaying SPI activity
 #define CAPTURE_PIN 4		    // displaying capture period
 #define RESET_PIN 5			    // displaying any fault
+#define RED_PIN 12
+#define GRN_PIN 11
+#define BLU_PIN 10
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
-#define AVR_CLK_ERR 0.993   // to be plotted overtime for accuracy
+#define AVR_CLK_ERR 0.99924 // to be plotted overtime for accuracy
 #define vScale 2.123
 #define iScale 0.0651
 

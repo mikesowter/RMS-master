@@ -123,11 +123,15 @@ void loadValues() {
 }
 
 void getSlaveTime() {
+  uint32_t start = millis();
   while (year() < 2019 || year() > 2030) {
     setTime(SPIm.readStatus()); 
     Serial.print(year());
     Serial.print(" ");
     delay(200);
+    if (millis()-start < 10000) continue;
+    setTime(0,0,0,1,1,2019);
+    setRed();
   }
   Serial.print((char*) dateStamp());
   Serial.print(" ");

@@ -25,18 +25,23 @@ void setup() {
 
 	pinMode(AC_IN_PIN, INPUT);
 	pinMode(RESET_PIN, OUTPUT);
+	pinMode(RED_PIN, OUTPUT);
+	pinMode(GRN_PIN, OUTPUT);
+	pinMode(BLU_PIN, OUTPUT);
 	digitalWrite(RESET_PIN, 0);		// reset slave
 	delay(10);
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 5.5  2019-06-28");
+	Serial.println("\n\rRMS Version 5.6  2019-07-16");
 
 	initADC();
 //	getFreq();		//local clock running at .9922?
+	setBlue();
 	setupSPI();
 	getSlaveTime();
 	SPI.end();
+	setGreen();
 	Serial.print(dateStamp());
 	Serial.print(" ");
 	Serial.println(timeStamp());
@@ -44,6 +49,7 @@ void setup() {
 	bufferNum = 0;
 	bufferPtr = 0;
 	loopStart = millis();
+	allOff();
 }
 
 void loop() {
@@ -111,13 +117,17 @@ void loop() {
 				t4 = millis()-loopStart;
 				Serial.print("  loop time: ");
 				Serial.println(t4);
+				setGreen();
 				if (t4 < 2500) delay(2500 - t4);
+				allOff();
 				loopStart = millis();
 			} //end full buffers
 		} //end oversampling
 	} //end full ADCbuf
 	else {
+		setRed();
 		Serial.println("failed to sample");
 		delay(2000);
 	}
 } //end loop
+
