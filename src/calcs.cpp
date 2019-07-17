@@ -58,19 +58,16 @@ void calcValues() {
 		for (uint8_t i=0 ; i<numSamples ; i++) {   			// subtract that offset & scale the channels
 			volts = vScale*(Vsmooth[0][i]-Voff);
 			amps = iScale*((float)Ismooth[circuit-1][i]-Ioff);
+			if (circuit == 1) amps *= 2.0;								// circuit 1 scaled for larger current
 			if (amps > Imax) Imax = amps;
 			if (amps < Imin) Imin = amps;
 			powerSum += (volts * amps);
 			IrmsSum  += (amps * amps);
 		}
-
-		// Wrms[circuit] = 0.9*Wrms[circuit] + 0.1*abs(powerSum / (float)numSamples);
-		Wrms[circuit] = abs(powerSum / (float)numSamples);
+	
+		Wrms[circuit] = 0.8*Wrms[circuit] + 0.2*abs(powerSum / (float)numSamples);
+		// Wrms[circuit] = abs(powerSum / (float)numSamples);
 		Irms[circuit] = (float) sqrt(IrmsSum / (float)numSamples);
-		if (circuit == 1) {
-			Irms[circuit] *= 2.0;  // first circuit is scaled for larger load
-			Wrms[circuit] *= 2.0;
-		}
 		Serial.print("Circuit[");
 		Serial.print(circuit);
 		Serial.print("]: Imin = ");

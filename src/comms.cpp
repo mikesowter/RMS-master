@@ -129,9 +129,12 @@ void getSlaveTime() {
     Serial.print(year());
     Serial.print(" ");
     delay(200);
-    if (millis()-start < 10000) continue;
-    setTime(0,0,0,1,1,2019);
+    if (millis()-start < 30000) continue;
     setRed();
+    digitalWrite(RESET_PIN, 0);		// reset slave
+    delay(100);
+    digitalWrite(RESET_PIN, 1);
+    setTime(0,0,0,1,1,2019);
   }
   Serial.print((char*) dateStamp());
   Serial.print(" ");
