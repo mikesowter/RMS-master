@@ -119,6 +119,11 @@ void loadValues() {
   load2Bytes(Vmax*50.0);
   for (uint8_t p=1 ; p<=NUM_CHANNELS ; p++) {   // bytes 8-27
     load2Bytes(Wrms[p]);
+    Serial.print("W[");
+    Serial.print(p);
+    Serial.print("]=");
+    Serial.print(Wrms[p]);
+    Serial.print(" ");
   }
 }
 

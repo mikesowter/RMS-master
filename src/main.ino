@@ -106,13 +106,6 @@ void loop() {
 				ADMUX &= 0xF0;
 				cbi(ADCSRB,3); 
 				bufferNum = 0;
-				
-				Serial.print("  scan time: ");
-				Serial.print(t1);
-				Serial.print("  calc time: ");
-				Serial.print(t2);
-				Serial.print("  comms time: ");
-				Serial.print(t3);
 				t4 = millis()-loopStart;
 				Serial.print("  loop time: ");
 				Serial.println(t4);
