@@ -36,7 +36,7 @@ void setRed();
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
 #define AVR_CLK_ERR 0.99924 // to be plotted overtime for accuracy
 #define vScale 2.123
-#define iScale 0.0651
+#define iScale 0.06647      // increased by 1.021 as at 20190922
 
 // set globals:
 extern uint8_t bufferNum;			      // 0-2 are voltage, 3-> are current

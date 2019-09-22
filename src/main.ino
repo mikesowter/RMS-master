@@ -33,7 +33,7 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 5.6  2019-07-17");
+	Serial.println("\n\rRMS Version 5.7  2019-09-22");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99924?
@@ -58,7 +58,7 @@ void loop() {
 		sbi(ADCSRA, ADEN);
 		sbi(ADCSRA, ADIE);
 		sbi(ADCSRA, ADSC);
-		delay(22);		// ESP8266 housekeeping while sampling
+		delay(22);		  // minimal activity while sampling
 	}
 	if (bufferPtr >= numSamples) {  	//should always be true
 		// Increment oversample count
@@ -107,8 +107,8 @@ void loop() {
 				cbi(ADCSRB,3); 
 				bufferNum = 0;
 				t4 = millis()-loopStart;
-				Serial.print("  loop time: ");
-				Serial.println(t4);
+//				Serial.print("  loop time: ");
+//				Serial.println(t4);
 				setGreen();
 				if (t4 < 2500) delay(2500 - t4);
 				allOff();
