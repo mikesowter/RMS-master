@@ -58,7 +58,7 @@ void loop() {
 		sbi(ADCSRA, ADEN);
 		sbi(ADCSRA, ADIE);
 		sbi(ADCSRA, ADSC);
-		delay(22);		// do nothing while sampling
+		delay(22);		// ESP8266 housekeeping while sampling
 	}
 	if (bufferPtr >= numSamples) {  	//should always be true
 		// Increment oversample count

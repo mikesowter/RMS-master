@@ -16,6 +16,7 @@ char* f2s2(float f);
 char* f2s4(float f);
 
 void calcValues() {
+	if ( numSamples == 0 ) return;
 	float ADCoffset = 0.0;
 
 	// first the voltage on A0-A2

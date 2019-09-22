@@ -37,7 +37,7 @@ void allOff();
 #define BLU_PIN 11
 #define GRN_PIN 10
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
-#define AVR_CLK_ERR 0.99924 // to be plotted over time for accuracy
+#define AVR_CLK_ERR 1.0     // to be plotted over time for accuracy 0.99924
 
 // set variables:
 uint8_t SPIbuf[6][32];      // sized to allow waveform transmission to slave
