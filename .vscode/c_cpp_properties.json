@@ -6,47 +6,53 @@
         {
             "name": "Win32",
             "includePath": [
+                "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/include",
                 "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/src",
                 "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/lib/Time-master",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/cores/arduino",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/variants/mega",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src",
-                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/variants/mega",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 "C:/Users/Mikes 6700K/.platformio/packages/tool-unity",
                 ""
             ],
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
+                    "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/include",
                     "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/src",
                     "c:/Users/Mikes 6700K/Dropbox/sketchbook/RMS master/lib/Time-master",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/cores/arduino",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/variants/mega",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src",
-                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/variants/mega",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "C:/Users/Mikes 6700K/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     "C:/Users/Mikes 6700K/.platformio/packages/tool-unity",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=40100",
+                "PLATFORMIO=40304",
                 "ARDUINO_AVR_MEGA2560",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
-                "ARDUINO=10805",
+                "ARDUINO=10808",
                 "__AVR_ATmega2560__",
                 ""
             ],
             "intelliSenseMode": "clang-x64",
             "cStandard": "c11",
             "cppStandard": "c++11",
-            "compilerPath": "\"C:/Users/Mikes 6700K/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe\" -mmcu=atmega2560"
+            "compilerPath": "C:/Users/Mikes 6700K/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
+            "compilerArgs": [
+                "-mmcu=atmega2560",
+                ""
+            ]
         }
     ],
     "version": 4
