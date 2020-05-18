@@ -33,7 +33,8 @@ void calcValues() {
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
 	Vmin = vScale*(min(Vsmooth[1][2],Vsmooth[0][40])-Voff);
   Vmax = vScale*(max(Vsmooth[2][2],Vsmooth[0][136])-Voff);
-	
+  printBuffers();
+/*
 	Serial.println();
 	Serial.print("Vrms = ");
 	Serial.print(Vrms);
@@ -43,7 +44,7 @@ void calcValues() {
 	Serial.print(Vmax);
 	Serial.print(", Freq = ");
 	Serial.println(getFreq());
-
+*/
 	// then the currents on A3,A4...
 
 	ADCoffset = 0.0;
@@ -69,7 +70,8 @@ void calcValues() {
 		Wrms[circuit] = 0.8*Wrms[circuit] + 0.2*abs(powerSum / (float)numSamples);
 		// Wrms[circuit] = abs(powerSum / (float)numSamples);
 		Irms[circuit] = (float) sqrt(IrmsSum / (float)numSamples);
-		Serial.print("Circuit[");
+	/*
+  	Serial.print("Circuit[");
 		Serial.print(circuit);
 		Serial.print("]: Imin = ");
 		Serial.print(Imin);
@@ -79,6 +81,7 @@ void calcValues() {
 		Serial.print(Irms[circuit]);
 		Serial.print(", Wrms = ");
 		Serial.println(Wrms[circuit]);
+    */
 	}
 }
 
