@@ -30,7 +30,7 @@ void setRed();
 void allOff();
 
 // set constants:
-#define NUM_CHANNELS 8      // the number of monitored circuits
+#define NUM_CIRCUITS 8      // the number of monitored circuits
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define RESET_PIN 3 		    // restart slave with master
 #define RED_PIN 12

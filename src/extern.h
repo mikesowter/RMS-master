@@ -25,7 +25,7 @@ void setGreen();
 void setRed();
 
 // set constants:
-#define NUM_CHANNELS 8      // the total number of analogs channels (V and Is)
+#define NUM_CIRCUITS 8      // the total number of analogs channels (V and Is)
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define SPI_ON_PIN 3    	  // the pin displaying SPI activity
 #define CAPTURE_PIN 4		    // displaying capture period

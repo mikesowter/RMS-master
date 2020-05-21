@@ -31,9 +31,9 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-	Vmin = vScale*(min(Vsmooth[1][2],Vsmooth[0][40])-Voff);
-  Vmax = vScale*(max(Vsmooth[2][2],Vsmooth[0][136])-Voff);
-  printBuffers();
+	Vmin = vScale*(min(Vsmooth[2][2],Vsmooth[0][40])-Voff);
+  Vmax = vScale*(max(Vsmooth[1][2],Vsmooth[0][136])-Voff);
+//  printBuffers();
 /*
 	Serial.println();
 	Serial.print("Vrms = ");
@@ -51,7 +51,7 @@ void calcValues() {
 	for (uint8_t i=0 ; i<numSamples ; i++) ADCoffset += (float)Ismooth[0][i];
 	Ioff = ADCoffset/(float)numSamples;
 
-	for (uint8_t circuit=1 ; circuit<=NUM_CHANNELS ; circuit++) {
+	for (uint8_t circuit=1 ; circuit<=NUM_CIRCUITS ; circuit++) {
 		powerSum = 0.0;
 		IrmsSum = 0.0;
 		Imax = -10.0;
@@ -82,7 +82,9 @@ void calcValues() {
 		Serial.print(", Wrms = ");
 		Serial.println(Wrms[circuit]);
     */
+   
 	}
+  printBuffers();
 }
 
 // convert float into char string ddddd.dd
@@ -101,7 +103,7 @@ void printBuffers() {
   for (int i=0;i<3;i++) {
 		Serial.println(i);
 		for (int j = 0; j<192; j++) {
-			Serial.print(Vsmooth[i][j]);
+			Serial.print(Ismooth[i][j]);
 			Serial.print(',');
 		}
     Serial.println();

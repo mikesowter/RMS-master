@@ -33,7 +33,7 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 5.7  2019-09-22");
+	Serial.println("\n\rRMS Version 5.8  2020-05-19");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99924?
@@ -89,7 +89,7 @@ void loop() {
 			if ( bufferNum < 8 ) cbi(ADCSRB,3);  //mux5 (ADCSRB b3) is used as MUX bit 3 
 			else sbi(ADCSRB,3);
 			// check for full buffers
-			if (bufferNum >= NUM_CHANNELS+3) {
+			if (bufferNum >= NUM_CIRCUITS+3) {
 				t1 = millis() - scanStart;
 //				printBuffers();
 //				delay(100);
@@ -107,8 +107,8 @@ void loop() {
 				cbi(ADCSRB,3); 
 				bufferNum = 0;
 				t4 = millis()-loopStart;
-//				Serial.print("  loop time: ");
-//				Serial.println(t4);
+				Serial.print("  loop time: ");
+				Serial.println(t4);
 				setGreen();
 				if (t4 < 2500) delay(2500 - t4);
 				allOff();

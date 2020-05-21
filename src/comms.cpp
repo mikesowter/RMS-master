@@ -3,7 +3,7 @@ project: RMS
 author: M Sowter
 description: send values to RMS slave via SPI
 *************************************************************
-Connect the SPI Master device to the following pins on the esp8266:
+Connect the SPI Master device via the following pins:
 
     GPIO    NodeMCU   Name  |   Uno     Mega2560
    =============================================
@@ -117,7 +117,7 @@ void loadValues() {
   load2Bytes(Vrms*100.0);
   load2Bytes(Vmin*50.0);
   load2Bytes(Vmax*50.0);
-  for (uint8_t p=1 ; p<=NUM_CHANNELS ; p++) {   // bytes 8-27
+  for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-29 allow for 11 circuits
     load2Bytes(Wrms[p]);
     Serial.print("W[");
     Serial.print(p);
@@ -125,6 +125,8 @@ void loadValues() {
     Serial.print(Wrms[p]);
     Serial.print(" ");
   }
+  SPIoff = 30;
+  load2Bytes(analogRead(A15));  // battery voltage 3V-4.2V
 }
 
 void getSlaveTime() {
