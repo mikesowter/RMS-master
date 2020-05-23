@@ -67,8 +67,8 @@ void calcValues() {
 			IrmsSum  += (amps * amps);
 		}
 	
-		Wrms[circuit] = 0.8*Wrms[circuit] + 0.2*abs(powerSum / (float)numSamples);
-		// Wrms[circuit] = abs(powerSum / (float)numSamples);
+		//Wrms[circuit] = 0.8*Wrms[circuit] + 0.2*abs(powerSum / (float)numSamples);
+		Wrms[circuit] = abs(powerSum / (float)numSamples);
 		Irms[circuit] = (float) sqrt(IrmsSum / (float)numSamples);
 	/*
   	Serial.print("Circuit[");
@@ -100,7 +100,7 @@ char* f2s4(float f) {
 }
 
 void printBuffers() {
-  for (int i=0;i<3;i++) {
+  for (int i=0;i<4;i++) {
 		Serial.println(i);
 		for (int j = 0; j<192; j++) {
 			Serial.print(Ismooth[i][j]);

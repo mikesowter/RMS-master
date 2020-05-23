@@ -35,8 +35,8 @@ void setRed();
 #define BLU_PIN 10
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
 #define AVR_CLK_ERR 0.99924 // to be plotted overtime for accuracy
-#define vScale 1.539        // updated 20200518
-#define iScale 0.06647      // increased by 1.021 as at 20190922
+#define vScale 1.564        // updated 20200524
+#define iScale 0.066164     // updated 20200524
 
 // set globals:
 extern uint8_t bufferNum;			      // 0-2 are voltage, 3-> are current
