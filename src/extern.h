@@ -64,5 +64,5 @@ extern float Vrms;						            // Sum of sampled V*V
 extern float powerSum;
 extern float IrmsSum;
 extern float VrmsSum;
-extern float volts,amps,Vmax,Vmin,Imax,Imin;
+extern float volts,amps,Vmax,Vmin,Imax,Imin,Vpk_neg,Vpk_pos;
 extern float gridFreq;

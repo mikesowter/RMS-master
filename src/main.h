@@ -66,5 +66,5 @@ float Vrms;						            // Sum of sampled V*V
 float powerSum;
 float IrmsSum;
 float VrmsSum;
-float volts,amps,Vmax,Vmin,Imax,Imin;
+float volts,amps,Vmax,Vmin,Imax,Imin,Vpk_neg,Vpk_pos;
 float gridFreq;

@@ -115,8 +115,8 @@ void loadValues() {
   SPIoff = 0;
   load2Bytes(getFreq()*1000.0);
   load2Bytes(Vrms*100.0);
-  load2Bytes(Vmin*50.0);
-  load2Bytes(Vmax*50.0);
+  load2Bytes(Vpk_neg*50.0);
+  load2Bytes(Vpk_pos*50.0);
   for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-29 allow for 11 circuits
     load2Bytes(Wrms[p]);
     Serial.print("W[");
@@ -127,7 +127,7 @@ void loadValues() {
   }
   SPIoff = 30;
   load2Bytes((float)analogRead(A15)*11.85);  // battery voltage 3V-4.2V
-  Serial.println((float)analogRead(A15)/84.6);
+  Serial.println((float)analogRead(A15)/125.9);
 }
 
 void getSlaveTime() {
