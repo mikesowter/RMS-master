@@ -31,10 +31,11 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-	Vmin = vScale*(min(Vsmooth[2][2],Vsmooth[0][40])-Voff);
-  Vmax = vScale*(max(Vsmooth[1][2],Vsmooth[0][136])-Voff);
+  Vmin = vScale*(Voff-Vsmooth[0][44]);  //abs voltage at peak low
+//	Vmin = vScale*(min(Vsmooth[0][140]-Voff,-(Vsmooth[0][44])-Voff));
+  Vmax = vScale*(Vsmooth[0][140]-Voff); //abs voltage at peak high
 //  printBuffers();
-/*
+
 	Serial.println();
 	Serial.print("Vrms = ");
 	Serial.print(Vrms);
@@ -44,7 +45,7 @@ void calcValues() {
 	Serial.print(Vmax);
 	Serial.print(", Freq = ");
 	Serial.println(getFreq());
-*/
+
 	// then the currents on A3,A4...
 
 	ADCoffset = 0.0;
@@ -84,7 +85,7 @@ void calcValues() {
     */
    
 	}
-  printBuffers();
+//  printBuffers();
 }
 
 // convert float into char string ddddd.dd
@@ -100,10 +101,10 @@ char* f2s4(float f) {
 }
 
 void printBuffers() {
-  for (int i=0;i<4;i++) {
+  for (int i=0;i<1;i++) {
 		Serial.println(i);
 		for (int j = 0; j<192; j++) {
-			Serial.print(Ismooth[i][j]);
+			Serial.print(Vsmooth[i][j]);
 			Serial.print(',');
 		}
     Serial.println();
