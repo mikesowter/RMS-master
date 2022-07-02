@@ -33,10 +33,10 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 5.8  2020-05-19");
+	Serial.println("\n\rRMS Version 5.9  2022-07-02");
 
 	initADC();
-//	getFreq();		//local clock running slow at .99924?
+//	getFreq();		//local clock running slow at .99936?
 	setBlue();
 	setupSPI();
 	getSlaveTime();
