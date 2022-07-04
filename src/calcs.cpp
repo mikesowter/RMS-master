@@ -31,9 +31,9 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-  Vpk_neg = vScale*(Voff-Vsmooth[0][44]);  //abs voltage at peak low
-  Vpk_pos = vScale*(Vsmooth[0][140]-Voff); //abs voltage at peak high
-//  printBuffers();
+  Vpk_neg = vScale*(Vsmooth[0][48]-Voff);  //abs voltage at peak low
+  Vpk_pos = vScale*(Vsmooth[0][144]-Voff); //abs voltage at peak high
+  // printBuffers();
 
 	Serial.println();
 	Serial.print("Vrms = ");
@@ -100,7 +100,7 @@ char* f2s4(float f) {
 }
 
 void printBuffers() {
-  for (int i=0;i<1;i++) {
+  for (int i=0;i<3;i++) {
 		Serial.println(i);
 		for (int j = 0; j<192; j++) {
 			Serial.print(Vsmooth[i][j]);
