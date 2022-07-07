@@ -132,17 +132,17 @@ void loadValues() {
 
 void getSlaveTime() {
   uint32_t start = millis();
-  while (year() < 2019 || year() > 2030) {
+  while (year() < 2022 || year() > 2050) {
     setTime(SPIm.readStatus()); 
     Serial.print(year());
     Serial.print(" ");
-    delay(200);
+    delay(1000);
     if (millis()-start < 30000) continue;
     setRed();
     digitalWrite(RESET_PIN, 0);		// reset slave
     delay(100);
     digitalWrite(RESET_PIN, 1);
-    setTime(0,0,0,1,1,2019);
+    setTime(0,0,0,1,1,2000);
   }
   Serial.print((char*) dateStamp());
   Serial.print(" ");

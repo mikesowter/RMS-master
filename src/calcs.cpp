@@ -31,8 +31,9 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-  Vpk_neg = vScale*(Vsmooth[0][48]-Voff);  //abs voltage at peak low
-  Vpk_pos = vScale*(Vsmooth[0][144]-Voff); //abs voltage at peak high
+  Vpk_pos = vScale*(Vsmooth[1][0]-Voff);   //from +ive peak detector
+  Vpk_neg = -vScale*(Vsmooth[2][0]-Voff);  //from -ive peak detector
+  
   // printBuffers();
 
 	Serial.println();
