@@ -1,6 +1,13 @@
+#include <arduino.h>
+
 #define RED_PIN 12
 #define GRN_PIN 10
 #define BLU_PIN 11
+
+void allOff();
+void setBlue();
+void setGreen();
+void setRed();
 
 void flashLEDs() {
   pinMode(BLU_PIN, OUTPUT);
