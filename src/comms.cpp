@@ -112,22 +112,32 @@ void load2Bytes(float f) {
 }
 
 void loadValues() {
-  SPIoff = 0;
-  load2Bytes(getFreq()*1000.0);
-  load2Bytes(Vrms*100.0);
-  load2Bytes(Vpk_neg*50.0);
-  load2Bytes(Vpk_pos*50.0);
-  for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-29 allow for 11 circuits
-    load2Bytes(Wrms[p]);
-    Serial.print("W[");
-    Serial.print(p);
-    Serial.print("]=");
-    Serial.print(Wrms[p]);
+  if ( pwrOutage ) {              // signal power outage to slave 
+    SPIbuf[0][0] = 0xFF;
+    SPIbuf[0][1] = 0xFF;
+    Serial.print((char*) dateStamp());
     Serial.print(" ");
+    Serial.print((char*) timeStamp());  
+    Serial.println("  Power Outage");
   }
-  SPIoff = 30;
-  load2Bytes((float)analogRead(A15)*11.85);  // battery voltage 3V-4.2V
-  Serial.println((float)analogRead(A15)/125.9);
+  else {
+    SPIoff = 0;
+    load2Bytes(getFreq()*1000.0);
+    load2Bytes(Vrms*100.0);
+    load2Bytes(Vpk_neg*50.0);
+    load2Bytes(Vpk_pos*50.0);
+    for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-29 allow for 11 circuits
+      load2Bytes(Wrms[p]);
+      Serial.print("W[");
+      Serial.print(p);
+      Serial.print("]=");
+      Serial.print(Wrms[p]);
+      Serial.print(" ");
+    }
+    SPIoff = 30;
+    load2Bytes((float)analogRead(A15)*11.85);  // battery voltage 3V-4.2V
+    Serial.println((float)analogRead(A15)/125.9);
+  }
 }
 
 void getSlaveTime() {

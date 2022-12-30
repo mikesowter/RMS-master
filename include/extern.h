@@ -49,7 +49,7 @@ extern uint32_t t0,t1,t2;           // times reported by slave
 extern volatile uint8_t bufferPtr;	// Offset in ADC buffer
 extern volatile uint16_t value;			// most recent ADC value
 extern volatile uint16_t ADCbuf[];  // new ADC buffer to allow oversampling
-extern bool bufferFull;
+extern bool bufferFull, pwrOutage;
 extern char d2Str[];
 extern char fltStr[];
 extern char dateStr[];

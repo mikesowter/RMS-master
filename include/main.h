@@ -52,6 +52,7 @@ volatile uint16_t value;		        // most recent ADC value
 volatile uint16_t ADCbuf[200];      // new ADC buffer to allow oversampling
 
 bool bufferFull = false;
+bool pwrOutage = false;
 uint8_t data[33];
 char d2Str[3],fltStr[12];
 char dateStr[] = "yymmdd";

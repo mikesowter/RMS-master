@@ -33,7 +33,7 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 6.0  2022-07-23");
+	Serial.println("\n\rRMS Version 6.1  2022-12-30");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99936?
