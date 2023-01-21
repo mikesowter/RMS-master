@@ -134,10 +134,10 @@ void loadValues() {
       Serial.print(Wrms[p]);
       Serial.print(" ");
     }
-    SPIoff = 30;
-    load2Bytes((float)analogRead(A15)*11.85);  // battery voltage 3V-4.2V
-    Serial.println((float)analogRead(A15)/125.9);
   }
+  SPIoff = 30;
+  load2Bytes((float)analogRead(A15)*11.85);  // battery voltage 3V-4.2V
+  Serial.println((float)analogRead(A15)/125.9);
 }
 
 void getSlaveTime() {
