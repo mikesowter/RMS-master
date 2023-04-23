@@ -34,7 +34,7 @@ void calcValues() {
   Vpk_pos = vScale*(Vsmooth[1][0]-Voff);   //from +ive peak detector
   Vpk_neg = -vScale*(Vsmooth[2][0]-Voff);  //from -ive peak detector
   
-  // printBuffers();
+  /* printBuffers();
 
 	Serial.println();
 	Serial.print("Vrms = ");
@@ -44,7 +44,7 @@ void calcValues() {
 	Serial.print(", Vpk_pos = ");
 	Serial.print(Vpk_pos);
 	Serial.print(", Freq = ");
-	Serial.println(getFreq());
+	Serial.println(getFreq());    */
 
 	// then the currents on A3,A4...
 
