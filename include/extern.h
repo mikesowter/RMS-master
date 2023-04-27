@@ -35,7 +35,7 @@ void setRed();
 #define BLU_PIN 10
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
 #define AVR_CLK_ERR 0.99936 // updated 20220702 based on avg freq of 49.994
-#define vScale 1.453        // updated 20200525 new tfr
+#define vScale 1.423        // updated 20230427 
 #define iScale 0.06406      // updated 20200524
 
 // set globals:

@@ -112,6 +112,9 @@ void load2Bytes(float f) {
 }
 
 void loadValues() {
+  // always send battery voltage
+  
+
   if ( pwrOutage ) {              // signal power outage to slave 
     SPIbuf[0][0] = 0xFF;
     SPIbuf[0][1] = 0xFF;
@@ -119,6 +122,9 @@ void loadValues() {
     Serial.print(" ");
     Serial.print((char*) timeStamp());  
     Serial.println("  Power Outage");
+    SPIoff = 30;
+    load2Bytes((float)analogRead(A15)*16.63);  // battery voltage 3V-4.2V
+    Serial.println((float)analogRead(A15)/90.4);
   }
   else {
     SPIoff = 0;
@@ -134,10 +140,11 @@ void loadValues() {
       Serial.print(Wrms[p]);
       Serial.print(" ");
     }
+    SPIoff = 30;
+    load2Bytes((float)analogRead(A15)*17.15);      // battery voltage 3V-4.2V
+    Serial.println((float)analogRead(A15)/86.5);
   }
-  SPIoff = 30;
-  load2Bytes((float)analogRead(A15)*11.85);  // battery voltage 3V-4.2V
-  Serial.println((float)analogRead(A15)/125.9);
+   
 }
 
 void getSlaveTime() {
