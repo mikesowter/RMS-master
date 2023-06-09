@@ -9,7 +9,6 @@
 #endif
 
 void calcValues();
-void sendValues();
 void initADC();
 void setupSPI();
 void getSlaveTime();

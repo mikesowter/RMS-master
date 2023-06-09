@@ -33,7 +33,7 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 6.1  2022-12-30");
+	Serial.println("\n\rRMS Version 6.2  2023-06-08");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99936?
@@ -107,8 +107,8 @@ void loop() {
 				cbi(ADCSRB,3); 
 				bufferNum = 0;
 				t4 = millis()-loopStart;
-				Serial.print("  loop time: ");
-				Serial.println(t4);
+//				Serial.print("  loop time: ");
+//				Serial.println(t4);
 				setGreen();
 				if (t4 < 2500) delay(2500 - t4);
 				allOff();

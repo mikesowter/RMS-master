@@ -21,6 +21,7 @@ Connect the SPI Master device via the following pins:
 #include "extern.h"
 #include <Time.h>
 uint8_t seq = 0;
+uint16_t checkSum;
 
 class ESPSafeMaster {
   private:
@@ -109,6 +110,7 @@ void load2Bytes(float f) {
   uint16_t ii = (uint16_t) abs(f);
   SPIbuf[0][SPIoff++] = highByte(ii);
   SPIbuf[0][SPIoff++] = lowByte(ii);
+  checkSum += ii;
 }
 
 void loadValues() {
@@ -122,27 +124,28 @@ void loadValues() {
     Serial.print(" ");
     Serial.print((char*) timeStamp());  
     Serial.println("  Power Outage");
-    SPIoff = 30;
-    load2Bytes((float)analogRead(A15)*16.63);  // battery voltage 3V-4.2V
+    SPIoff = 28;
+    load2Bytes((float)analogRead(A15)*16.63);     // battery voltage 3V-4.2V
     Serial.println((float)analogRead(A15)/90.4);
   }
   else {
     SPIoff = 0;
+    checkSum = 0;
     load2Bytes(getFreq()*1000.0);
     load2Bytes(Vrms*100.0);
     load2Bytes(Vpk_neg*50.0);
     load2Bytes(Vpk_pos*50.0);
-    for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-29 allow for 11 circuits
+    Serial.print((char*) timeStamp());  
+    for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-27 allow for 10 circuits
       load2Bytes(Wrms[p]);
-      Serial.print("W[");
-      Serial.print(p);
-      Serial.print("]=");
+      Serial.print(",");
       Serial.print(Wrms[p]);
-      Serial.print(" ");
     }
-    SPIoff = 30;
-    load2Bytes((float)analogRead(A15)*17.15);      // battery voltage 3V-4.2V
-    Serial.println((float)analogRead(A15)/86.5);
+    SPIoff = 28;
+    load2Bytes((float)analogRead(A15)*17.15);     // battery voltage 3V-4.2V
+    Serial.print(",");
+    Serial.println((float)analogRead(A15)/124.6);
+    load2Bytes((float)checkSum);
   }
    
 }
