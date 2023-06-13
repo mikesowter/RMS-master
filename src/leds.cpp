@@ -22,6 +22,12 @@ void flashLEDs() {
   allOff();
 }
 
+void flashPIN(uint8_t pin) {
+  digitalWrite(pin,0);      //turn on
+  delay(10);
+  digitalWrite(pin,1);      //turn off
+}
+
 void allOff() {
   digitalWrite(BLU_PIN,1);      //turn on Blue
   digitalWrite(GRN_PIN,1);      //turn off Green

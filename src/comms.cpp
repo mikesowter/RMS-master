@@ -64,6 +64,7 @@ class ESPSafeMaster {
         data[i] = SPI.transfer(0);
       }
       _pulseSS();
+      flashPIN(Rx_PIN);
     }
 
     void writeData(uint8_t * data, size_t len) {
@@ -78,6 +79,7 @@ class ESPSafeMaster {
         SPI.transfer(0);
       }
       _pulseSS();
+      flashPIN(Tx_PIN);
     }
 
     String readData() {
@@ -159,11 +161,10 @@ void getSlaveTime() {
     delay(1000);
     if (millis()-start < 30000) continue;
     setRed();
-    digitalWrite(RESET_PIN, 0);		// reset slave
-    delay(100);
-    digitalWrite(RESET_PIN, 1);
-    setTime(0,0,0,1,1,2000);
   }
+  Serial.print("\ntime code received in ");
+  Serial.print(millis()-start);
+  Serial.print(" ms\n");
   Serial.print((char*) dateStamp());
   Serial.print(" ");
   Serial.println((char*) timeStamp());  

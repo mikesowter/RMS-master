@@ -24,6 +24,7 @@ char* i2sd(byte b);
 char* dateStamp();
 char* timeStamp();
 void flashLEDs();
+void flashPIN(uint8_t pin);
 void setBlue();
 void setGreen();
 void setRed();
@@ -31,12 +32,14 @@ void allOff();
 
 // set constants:
 #define NUM_CIRCUITS 8      // the number of monitored circuits
+#define Tx_PIN 0
+#define Rx_PIN 1
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define RESET_PIN 3 		    // restart slave with master
 #define RED_PIN 12
 #define BLU_PIN 11
 #define GRN_PIN 10
-#define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
+#define OVER_SAMPLE 1       // oversample to remove nonharmonic noise - set to no oversample
 #define AVR_CLK_ERR 1.0     // to be plotted over time for accuracy 0.99924
 
 // set variables:

@@ -19,12 +19,15 @@ void send(uint8_t* data);
 char* dateStamp();
 char* timeStamp();
 void flashLEDs();
+void flashPIN(uint8_t pin);
 void setBlue();
 void setGreen();
 void setRed();
 
 // set constants:
 #define NUM_CIRCUITS 8      // the total number of analogs channels (V and Is)
+#define Tx_PIN 0
+#define Rx_PIN 1
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
 #define SPI_ON_PIN 3    	  // the pin displaying SPI activity
 #define CAPTURE_PIN 4		    // displaying capture period

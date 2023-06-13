@@ -107,11 +107,11 @@ void loop() {
 				cbi(ADCSRB,3); 
 				bufferNum = 0;
 				t4 = millis()-loopStart;
-//				Serial.print("  loop time: ");
-//				Serial.println(t4);
+	//			Serial.print("  loop time: ");
+	//			Serial.println(t4);
 				setGreen();
-				if (t4 < 2500) delay(2500 - t4);
-				allOff();
+				if (t4 < 1000) delay(1000 - t4);
+	//			allOff();
 				loopStart = millis();
 			} //end full buffers
 		} //end oversampling
