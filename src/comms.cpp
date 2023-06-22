@@ -64,7 +64,7 @@ class ESPSafeMaster {
         data[i] = SPI.transfer(0);
       }
       _pulseSS();
-      flashPIN(Rx_PIN);
+    //  flashPIN(Rx_PIN);
     }
 
     void writeData(uint8_t * data, size_t len) {
@@ -79,7 +79,7 @@ class ESPSafeMaster {
         SPI.transfer(0);
       }
       _pulseSS();
-      flashPIN(Tx_PIN);
+      flashPIN(GRN_PIN);
     }
 
     String readData() {
