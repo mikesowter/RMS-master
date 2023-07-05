@@ -34,7 +34,7 @@ void setup() {
 	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 6.2  2023-0615");
+	Serial.println("\n\rRMS Version 6.2  20230701");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99936?
@@ -42,9 +42,6 @@ void setup() {
 	setupSPI();
 	getSlaveTime();
 	SPI.end();
-	Serial.print(dateStamp());
-	Serial.print(" ");
-	Serial.println(timeStamp());
 	osCount = 0;
 	bufferNum = 0;
 	bufferPtr = 0;
@@ -110,7 +107,7 @@ void loop() {
 				t4 = millis()-loopStart;
 	//			Serial.print("  loop time: ");
 	//			Serial.println(t4);
-				setGreen();
+	//			setGreen();
 				if (t4 < 1000) delay(1000 - t4);
 	//			allOff();
 				loopStart = millis();

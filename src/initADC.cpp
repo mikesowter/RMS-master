@@ -18,7 +18,7 @@ void initADC(void)
 	// 1 1 Internal 1.1V Voltage Reference with external
 	//   capacitor at AREF pin
 	cbi(ADMUX, REFS1);
-	sbi(ADMUX, REFS0);
+	cbi(ADMUX, REFS0);
 
 	// The ADLAR bit affects the presentation of the ADC conversion result
 	// in the ADC Data Register. Write one to ADLAR to left adjust the

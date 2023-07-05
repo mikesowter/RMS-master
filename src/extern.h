@@ -33,8 +33,8 @@ void setRed();
 #define CAPTURE_PIN 4		    // displaying capture period
 #define RESET_PIN 5			    // displaying any fault
 #define RED_PIN 12
-#define GRN_PIN 11
-#define BLU_PIN 10
+#define BLU_PIN 11
+#define GRN_PIN 10
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
 #define AVR_CLK_ERR 0.99936 // updated 20220702 based on avg freq of 49.994
 #define vScale 1.423        // updated 20230427 

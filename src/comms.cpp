@@ -79,7 +79,8 @@ class ESPSafeMaster {
         SPI.transfer(0);
       }
       _pulseSS();
-      flashPIN(GRN_PIN);
+      if (pwrOutage) flashPIN(RED_PIN);
+      else flashPIN(GRN_PIN);
     }
 
     String readData() {
@@ -118,17 +119,18 @@ void load2Bytes(float f) {
 void loadValues() {
   // always send battery voltage
   
-
+  SPIoff = 0;
+  checkSum = 0;
   if ( pwrOutage ) {              // signal power outage to slave 
-    SPIbuf[0][0] = 0xFF;
-    SPIbuf[0][1] = 0xFF;
+    load2Bytes(0xFFFF);
     Serial.print((char*) dateStamp());
     Serial.print(" ");
     Serial.print((char*) timeStamp());  
     Serial.println("  Power Outage");
     SPIoff = 28;
-    load2Bytes((float)analogRead(A15)*16.63);     // battery voltage 3V-4.2V
-    Serial.println((float)analogRead(A15)/90.4);
+    analogRead(A15);
+    load2Bytes((float)analogRead(A15)*12.6);     // battery voltage 3V-4.2V
+    Serial.println((float)analogRead(A15)/145.4); 
   }
   else {
     SPIoff = 0;
@@ -144,12 +146,11 @@ void loadValues() {
       Serial.print(Wrms[p]);
     }
     SPIoff = 28;
-    load2Bytes((float)analogRead(A15)*17.15);     // battery voltage 3V-4.2V
+    load2Bytes((float)analogRead(A15)*17.15F);     // battery voltage 3V-4.2V
     Serial.print(",");
-    Serial.println((float)analogRead(A15)/124.6);
-    load2Bytes((float)checkSum);
+    Serial.println((float)analogRead(A15)/125.5F);
   }
-   
+  load2Bytes((float)checkSum);  // for power outage as well
 }
 
 void getSlaveTime() {
@@ -159,14 +160,14 @@ void getSlaveTime() {
     Serial.print(year());
     Serial.print(" ");
     delay(1000);
-    if (millis()-start < 30000) continue;
+    if (millis()-start > 10000) return;
     setRed();
   }
   Serial.print("\ntime code received in ");
   Serial.print(millis()-start);
   Serial.print(" ms\n");
   Serial.print((char*) dateStamp());
-  Serial.print(" ");
+  Serial.print(" "); 
   Serial.println((char*) timeStamp());  
   delay(10);
 }
