@@ -29,12 +29,12 @@ void setup() {
 	pinMode(GRN_PIN, OUTPUT);
 	pinMode(BLU_PIN, OUTPUT);
 	pinMode(Tx_PIN,OUTPUT);
-	digitalWrite(RESET_PIN, 0);		// reset slave
-	delay(10);
-	digitalWrite(RESET_PIN, 1);
+//	digitalWrite(RESET_PIN, 0);		// reset slave
+//	delay(10);
+//	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 6.2  20230701");
+	Serial.println("\n\rRMS Version 6.2  20230805");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99936?

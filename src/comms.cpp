@@ -130,7 +130,7 @@ void loadValues() {
     SPIoff = 28;
     analogRead(A15);
     load2Bytes((float)analogRead(A15)*12.6);     // battery voltage 3V-4.2V
-    Serial.println((float)analogRead(A15)/145.4); 
+  //  Serial.println((float)analogRead(A15)/145.4); 
   }
   else {
     SPIoff = 0;
@@ -142,13 +142,12 @@ void loadValues() {
     Serial.print((char*) timeStamp());  
     for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-27 allow for 10 circuits
       load2Bytes(Wrms[p]);
-      Serial.print(",");
-      Serial.print(Wrms[p]);
-    }
-    SPIoff = 28;
-    load2Bytes((float)analogRead(A15)*17.15F);     // battery voltage 3V-4.2V
-    Serial.print(",");
-    Serial.println((float)analogRead(A15)/125.5F);
+//     Serial.print(",");
+//     Serial.print(Wrms[p]);
+   }
+   SPIoff = 28;
+   load2Bytes((float)analogRead(A15)*17.15F);     // battery voltage 3V-4.2V
+//    Serial.print(",");//  Serial.println((float)analogRead(A15)/125.5F);
   }
   load2Bytes((float)checkSum);  // for power outage as well
 }
@@ -157,10 +156,13 @@ void getSlaveTime() {
   uint32_t start = millis();
   while (year() < 2022 || year() > 2050) {
     setTime(SPIm.readStatus()); 
-    Serial.print(year());
-    Serial.print(" ");
+  //  Serial.print(year());
+  //  Serial.print(" ");
     delay(1000);
-    if (millis()-start > 10000) return;
+    if (millis()-start > 10000) {
+      Serial.print("\ntime code not received");
+      return;
+    }
     setRed();
   }
   Serial.print("\ntime code received in ");
