@@ -40,7 +40,6 @@ void allOff();
 #define BLU_PIN 11
 #define GRN_PIN 10
 #define OVER_SAMPLE 1       // oversample to remove nonharmonic noise - set to no oversample
-#define AVR_CLK_ERR 1.0     // to be plotted over time for accuracy 0.99924
 
 // set variables:
 uint8_t SPIbuf[6][32];      // sized to allow waveform transmission to slave
@@ -62,7 +61,7 @@ char dateStr[] = "yymmdd";
 char timeStr[] = "hh:mm:ss";
 char charBuf[128];
 float Voff,Ioff;				          // average ADC offset
-float Vsmooth[3][200];            // Storage for smoothed voltage counts
+float V[3][200];            // Storage for smoothed voltage counts
 uint16_t Ismooth[10][200];        // Storage for smoothed CURRENT counts
 float Wrms[10];		                // Sum of sampled V*I
 float Irms[10];			              // Sum of sampled I*I

@@ -23,16 +23,16 @@ void calcValues() {
 
 	VrmsSum = 0.0;
 	for (uint8_t i=0;i<numSamples;i++) {	     // calculate average voltage offset
-		ADCoffset += Vsmooth[0][i];
+		ADCoffset += V[0][i];
 	}
 	Voff = (ADCoffset/(float)numSamples);
 	for (uint8_t i=0;i<numSamples;i++) {   			// then using that offset, scale the channels
-		volts = vScale*(Vsmooth[0][i]-Voff);    
+		volts = vScale*(V[0][i]-Voff);    
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-	Vpk_pos = vScale*(Vsmooth[1][0]-Voff);   //from +ive peak detector
-	Vpk_neg = -vScale*(Vsmooth[2][0]-Voff);  //from -ive peak detector
+	Vpk_pos = vScale*(V[1][0]-Voff);   //from +ive peak detector
+	Vpk_neg = -vScale*(V[2][0]-Voff);  //from -ive peak detector
   
   /* printBuffers();
 
@@ -59,7 +59,7 @@ void calcValues() {
 		Imin = +10.0;
 	
 		for (uint8_t i=0 ; i<numSamples ; i++) {   			// subtract that offset & scale the channels
-			volts = vScale*(Vsmooth[0][i]-Voff);
+			volts = vScale*(V[0][i]-Voff);
 			amps = iScale*((float)Ismooth[circuit-1][i]-Ioff);
 			if (circuit == 1) amps *= 2.0;								// circuit 1 scaled for larger current
 			if (amps > Imax) Imax = amps;
@@ -104,7 +104,7 @@ void printBuffers() {
   for (int i=0;i<3;i++) {
 		Serial.println(i);
 		for (int j = 0; j<192; j++) {
-			Serial.print(Vsmooth[i][j]);
+			Serial.print(V[i][j]);
 			Serial.print(',');
 		}
     Serial.println();
@@ -113,12 +113,13 @@ void printBuffers() {
 }
 
 float getFreq() {
+	const float NanoClockErr = 50.0/49.994;
 	waitForXing();
 	uint32_t t = micros();
 	for (int i=0;i<10;i++) {	// measure period of 10 cycles in microseconds
 		waitForXing();					// frequency = 50.0*(10*20,000/period)
 	}
-	return AVR_CLK_ERR*10000000.0/(float)(micros()-t);
+	return NanoClockErr*10000000.0/(float)(micros()-t);
 
 	// could optionally calculate the number of samples per cycle as:
 	// numSamples = (int)(192.3/AVR_CLK_ERR)*(float)t/200.0;  

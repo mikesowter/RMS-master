@@ -34,7 +34,7 @@ void setup() {
 //	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 6.2  20230805");
+	Serial.println("\n\rRMS Version 6.2  20231009");
 
 	initADC();
 //	getFreq();		//local clock running slow at .99936?
@@ -69,7 +69,7 @@ void loop() {
 		if (osCount >= OVER_SAMPLE) {
 			if (bufferNum < 3) {			// bufferNum 0-2 are voltage
 				for (int i = 0 ; i<numSamples ; i++) {
-					Vsmooth[bufferNum][i] = (float)ADCbuf[i]/(float)OVER_SAMPLE;
+					V[bufferNum][i] = (float)ADCbuf[i]/(float)OVER_SAMPLE;
 					ADCbuf[i] = 0;
 				}
 			}

@@ -36,7 +36,6 @@ void setRed();
 #define BLU_PIN 11
 #define GRN_PIN 10
 #define OVER_SAMPLE 4       // oversample to remove nonharmonic noise
-#define AVR_CLK_ERR 0.99936 // updated 20220702 based on avg freq of 49.994
 #define vScale 1.459        // updated 20230806 
 #define iScale 0.06406      // updated 20200524
 
@@ -57,7 +56,7 @@ extern char fltStr[];
 extern char dateStr[];
 extern char timeStr[];
 extern char charBuf[];
-extern float Vsmooth[3][200];             // Storage for over-sampled voltage counts
+extern float V[3][200];             // Storage for over-sampled voltage counts
 extern uint16_t Ismooth[10][200];         // Storage for over-sampled CURRENT counts
 extern float Voff,Ioff;				            // average ADC offset
 extern float Wrms[];					            // Sum of sampled V*I
