@@ -25,13 +25,13 @@ void setGreen();
 void setRed();
 
 // set constants:
-#define NUM_CIRCUITS 8      // the total number of analogs channels (V and Is)
+#define NUM_CCTS 8          // the total number of analogs channels (V and Is)
 #define Tx_PIN 0
 #define Rx_PIN 1
 #define AC_IN_PIN 2         // the pin connected to a squared 50Hz waveform
-#define SPI_ON_PIN 3    	  // the pin displaying SPI activity
-#define CAPTURE_PIN 4		    // displaying capture period
-#define RESET_PIN 5			    // displaying any fault
+#define SPI_ON_PIN 3    	// the pin displaying SPI activity
+#define CAPTURE_PIN 4		// displaying capture period
+#define RESET_PIN 5			// displaying any fault
 #define RED_PIN 12
 #define BLU_PIN 11
 #define GRN_PIN 10
@@ -65,5 +65,5 @@ extern float Vrms;						            // Sum of sampled V*V
 extern float powerSum;
 extern float IrmsSum;
 extern float VrmsSum;
-extern float volts,amps,Vmax,Vmin,Imax,Imin,Vpk_neg,Vpk_pos;
+extern float volts,amps,Vmax,Vmin,Imax,Imin,Vnp_min,Vpp_max;
 extern float gridFreq;

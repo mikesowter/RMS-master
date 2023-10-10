@@ -31,18 +31,18 @@ void calcValues() {
 		VrmsSum  += (volts * volts);
 	}
 	Vrms = (float) sqrt(VrmsSum / (float)numSamples);
-	Vpk_pos = vScale*(V[1][0]-Voff);   //from +ive peak detector
-	Vpk_neg = -vScale*(V[2][0]-Voff);  //from -ive peak detector
+	Vpp_max = vScale*(V[1][0]-Voff);   //from +ive peak detector
+	Vnp_min = -vScale*(V[2][0]-Voff);  //from -ive peak detector
   
   /* printBuffers();
 
 	Serial.println();
 	Serial.print("Vrms = ");
 	Serial.print(Vrms);
-	Serial.print(", Vpk_neg = ");
-	Serial.print(Vpk_neg);
-	Serial.print(", Vpk_pos = ");
-	Serial.print(Vpk_pos);
+	Serial.print(", Vnp_min = ");
+	Serial.print(Vnp_min);
+	Serial.print(", Vpp_max = ");
+	Serial.print(Vpp_max);
 	Serial.print(", Freq = ");
 	Serial.println(getFreq());    */
 
@@ -52,7 +52,7 @@ void calcValues() {
 	for (uint8_t i=0 ; i<numSamples ; i++) ADCoffset += (float)Ismooth[0][i];
 	Ioff = ADCoffset/(float)numSamples;
 
-	for (uint8_t circuit=1 ; circuit<=NUM_CIRCUITS ; circuit++) {
+	for (uint8_t circuit=1 ; circuit<=NUM_CCTS ; circuit++) {
 		powerSum = 0.0;
 		IrmsSum = 0.0;
 		Imax = -10.0;
@@ -113,7 +113,7 @@ void printBuffers() {
 }
 
 float getFreq() {
-	const float NanoClockErr = 50.0/49.994;
+	const float NanoClockErr = 50.0/50.0;
 	waitForXing();
 	uint32_t t = micros();
 	for (int i=0;i<10;i++) {	// measure period of 10 cycles in microseconds

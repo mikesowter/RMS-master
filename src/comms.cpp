@@ -5,12 +5,12 @@ description: send values to RMS slave via SPI
 *************************************************************
 Connect the SPI Master device via the following pins:
 
-    GPIO    NodeMCU   Name  |   Uno     Mega2560
+    GPIO    esp8266   Name  |   Uno     Mega2560
    =============================================
-     15       D8       SS   |   D10       D19
-     13       D7      MOSI  |   D11       D21
-     12       D6      MISO  |   D12       D22
-     14       D5      SCK   |   D13       D20
+     15       D8       SS   |   D10       53   BLUE
+     13       D7      MOSI  |   D11       51   YELLOW
+     12       D6      MISO  |   D12       50   WHITE
+     14       D5      SCK   |   D13       52   GREEN
 
     Note: If the ESP is booting at a moment when the SPI Master has the Select line HIGH (deselected)
     the ESP8266 WILL FAIL to boot!
@@ -117,39 +117,24 @@ void load2Bytes(float f) {
 }
 
 void loadValues() {
-  // always send battery voltage
-  
+  Serial.print(timeStamp());  
   SPIoff = 0;
   checkSum = 0;
   if ( pwrOutage ) {              // signal power outage to slave 
-    load2Bytes(0xFFFF);
-    Serial.print((char*) dateStamp());
-    Serial.print(" ");
-    Serial.print((char*) timeStamp());  
-    Serial.println("  Power Outage");
-    SPIoff = 28;
-    analogRead(A15);
-    load2Bytes((float)analogRead(A15)*12.6);     // battery voltage 3V-4.2V
-  //  Serial.println((float)analogRead(A15)/145.4); 
+    load2Bytes(0xFFFF);                 
   }
   else {
-    SPIoff = 0;
-    checkSum = 0;
     load2Bytes(getFreq()*1000.0);
     load2Bytes(Vrms*100.0);
-    load2Bytes(Vpk_neg*50.0);
-    load2Bytes(Vpk_pos*50.0);
-    Serial.print((char*) timeStamp());  
-    for (uint8_t p=1 ; p<=NUM_CIRCUITS ; p++) {   // bytes 8-27 allow for 10 circuits
+    for (uint8_t p=1 ; p<=NUM_CCTS ; p++) {     // bytes 4-25 allow for 11 circuits
       load2Bytes(Wrms[p]);
-//     Serial.print(",");
-//     Serial.print(Wrms[p]);
-   }
-   SPIoff = 28;
-   load2Bytes((float)analogRead(A15)*17.15F);     // battery voltage 3V-4.2V
-//    Serial.print(",");//  Serial.println((float)analogRead(A15)/125.5F);
+    }
+    SPIoff = 26;
+    load2Bytes(Vpp_max*100.0);
+    load2Bytes(Vnp_min*100.0);
   }
-  load2Bytes((float)checkSum);  // for power outage as well
+  SPIoff = 30;
+  load2Bytes((float)checkSum);                  // for power outage as well
 }
 
 void getSlaveTime() {

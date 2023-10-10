@@ -31,7 +31,7 @@ void setRed();
 void allOff();
 
 // set constants:
-#define NUM_CIRCUITS 8      
+#define NUM_CCTS 8      
 #define Tx_PIN 0
 #define Rx_PIN 1
 #define AC_IN_PIN 2         
@@ -69,5 +69,5 @@ float Vrms;						            // Sum of sampled V*V
 float powerSum;
 float IrmsSum;
 float VrmsSum;
-float volts,amps,Vmax,Vmin,Imax,Imin,Vpk_neg,Vpk_pos;
+float volts,amps,Vmax,Vmin,Imax,Imin,Vnp_min,Vpp_max;
 float gridFreq;

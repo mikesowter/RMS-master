@@ -34,10 +34,9 @@ void setup() {
 //	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 6.2  20231009");
+	Serial.println("\n\rRMS Version 7.0  20231010");
 
 	initADC();
-//	getFreq();		//local clock running slow at .99936?
 	setBlue();
 	setupSPI();
 	getSlaveTime();
@@ -87,7 +86,7 @@ void loop() {
 			if ( bufferNum < 8 ) cbi(ADCSRB,3);  //mux5 (ADCSRB b3) is used as MUX bit 3 
 			else sbi(ADCSRB,3);
 			// check for full buffers
-			if (bufferNum >= NUM_CIRCUITS+3) {
+			if (bufferNum >= NUM_CCTS+3) {
 				t1 = millis() - scanStart;
 //				printBuffers();
 //				delay(100);
