@@ -114,9 +114,12 @@ void load2Bytes(float f) {
   SPIbuf[0][SPIoff++] = highByte(ii);
   SPIbuf[0][SPIoff++] = lowByte(ii);
   checkSum += ii;
+  Serial.print(ii,HEX);
+  Serial.print(" ");
 }
 
 void loadValues() {
+  Serial.print("\n");
   Serial.print(timeStamp());  
   SPIoff = 0;
   checkSum = 0;
@@ -124,14 +127,14 @@ void loadValues() {
     load2Bytes(0xFFFF);                 
   }
   else {
-    load2Bytes(getFreq()*1000.0);
+    load2Bytes(getFreq()*500.0);
     load2Bytes(Vrms*100.0);
     for (uint8_t p=1 ; p<=NUM_CCTS ; p++) {     // bytes 4-25 allow for 11 circuits
       load2Bytes(Wrms[p]);
     }
     SPIoff = 26;
-    load2Bytes(Vpp_max*100.0);
-    load2Bytes(Vnp_min*100.0);
+    load2Bytes(Vpp_max*50.0);
+    load2Bytes(Vnp_min*50.0);
   }
   SPIoff = 30;
   load2Bytes((float)checkSum);                  // for power outage as well
