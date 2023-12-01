@@ -15,7 +15,7 @@ void getSlaveTime();
 void waitForXing();
 float getFreq();
 void printBuffers();
-void send(uint8_t* data);
+void transport();
 char* dateStamp();
 char* timeStamp();
 void flashLEDs();
@@ -42,9 +42,9 @@ void setRed();
 // set globals:
 extern uint8_t bufferNum;			      // 0-2 are voltage, 3-> are current
 extern uint8_t OSindex;             // OS oversample count
-extern uint8_t numSamples;			    // number of 104us samples per power cycle
-extern uint8_t SPIbuf[][32];        // sized to allow waveform transmission to slave
-extern uint8_t SPIoff;              // offset into SPIbuf
+extern uint8_t numSamples;			// number of 104us samples per power cycle
+extern uint8_t MOSIbuf[], MISObuf[];            
+extern uint8_t SPIoff;              // offset into MOSIbuf
 extern uint8_t data[];              // 32 bytes from SPI
 extern uint32_t t0,t1,t2;           // times reported by slave
 extern volatile uint8_t bufferPtr;	// Offset in ADC buffer

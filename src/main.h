@@ -19,7 +19,7 @@ void setupSPI();
 void getSlaveTime();
 void waitForXing();
 void printBuffers();
-void send(uint8_t *);
+void transport();
 char* i2sd(byte b);
 char* dateStamp();
 char* timeStamp();
@@ -42,11 +42,11 @@ void allOff();
 #define OVER_SAMPLE 1       // oversample to remove nonharmonic noise - set to no oversample
 
 // set variables:
-uint8_t SPIbuf[6][32];      // sized to allow waveform transmission to slave
+uint8_t MOSIbuf[32], MISObuf[32];      // separate buffers
 uint8_t bufferNum;					// smooth[0] is voltage, smooth[1->] are current
 uint8_t osCount = 0;        // OS oversample count
 uint8_t numSamples = 192;	  // number of 104us samples per power cycle
-uint8_t SPIoff;             // offset into SPIbuf
+uint8_t SPIoff;             // offset into MOSIbuf
 uint32_t t0,t1,t2,t3,t4;            // various ms timers
 uint32_t loopStart,scanStart,calcStart;           
 volatile uint8_t bufferPtr;         // Offset in ADC buffer

@@ -109,13 +109,29 @@ void setupSPI() {
   SPIm.begin();
 }
 
+// send data with ACK/NAK process
+void transport() {	
+	setupSPI();	
+  do {
+    SPIm.writeData(MOSIbuf,32);
+    SPIm.readData(MISObuf);
+    Serial.print("ack:");
+    Serial.print(MISObuf[0],HEX);
+    Serial.print(" ");
+    delay(10);
+  } while ( MISObuf[0] != 0x06 );
+	SPI.end();
+}
+
 void load2Bytes(float f) {
-  uint16_t ii = (uint16_t) abs(f);
-  SPIbuf[0][SPIoff++] = highByte(ii);
-  SPIbuf[0][SPIoff++] = lowByte(ii);
+  if (SPIoff > 30) return;
+  if (f > 65535.0F ) f = 9999.0;
+  uint16_t ii = (uint16_t) f;
+  MOSIbuf[SPIoff++] = highByte(ii);
+  MOSIbuf[SPIoff++] = lowByte(ii);
+  Serial.print(ii),
+  Serial.print(",");
   checkSum += ii;
-  Serial.print(ii,HEX);
-  Serial.print(" ");
 }
 
 void loadValues() {
@@ -127,17 +143,20 @@ void loadValues() {
     load2Bytes(0xFFFF);                 
   }
   else {
-    load2Bytes(getFreq()*500.0);
+    load2Bytes(getFreq()*1000.0);
     load2Bytes(Vrms*100.0);
-    for (uint8_t p=1 ; p<=NUM_CCTS ; p++) {     // bytes 4-25 allow for 11 circuits
+    for (uint8_t p=1 ; p<=NUM_CCTS ; p++) {       // bytes 4-25 allow for 11 circuits
       load2Bytes(Wrms[p]);
     }
+    for (uint8_t p=NUM_CCTS+1 ; p<=11 ; p++) {    // bytes 20-25 are spare circuits
+      load2Bytes(Wrms[0]);
+    }
     SPIoff = 26;
-    load2Bytes(Vpp_max*50.0);
-    load2Bytes(Vnp_min*50.0);
+    load2Bytes(Vpp_max*100.0);
+    load2Bytes(Vnp_min*100.0);
   }
   SPIoff = 30;
-  load2Bytes((float)checkSum);                  // for power outage as well
+  load2Bytes((float)checkSum);                  
 }
 
 void getSlaveTime() {

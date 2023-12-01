@@ -34,7 +34,7 @@ void setup() {
 //	digitalWrite(RESET_PIN, 1);
 
 	Serial.begin(115200);
-	Serial.println("\n\rRMS Version 7.0  20231010");
+	Serial.println("\n\rRMS1 Version 7.1  20231201");
 
 	initADC();
 	setBlue();
@@ -87,28 +87,16 @@ void loop() {
 			else sbi(ADCSRB,3);
 			// check for full buffers
 			if (bufferNum >= NUM_CCTS+3) {
-				t1 = millis() - scanStart;
-//				printBuffers();
-//				delay(100);
-				calcStart = millis();
 				calcValues();			
-				t2 = millis() - calcStart;
-				setupSPI();				
-				// load data to send to slave
+				// load data and send to slave
 				loadValues();
-				send(SPIbuf[0]);
-				SPI.end();
-				t3 = millis() - calcStart - t2;
-				// setup for new scan every 2.5 seconds
+				transport();
+				// setup for new scan every second
 				ADMUX &= 0xF0;
 				cbi(ADCSRB,3); 
 				bufferNum = 0;
 				t4 = millis()-loopStart;
-	//			Serial.print("  loop time: ");
-	//			Serial.println(t4);
-	//			setGreen();
 				if (t4 < 1000) delay(1000 - t4);
-	//			allOff();
 				loopStart = millis();
 			} //end full buffers
 		} //end oversampling
